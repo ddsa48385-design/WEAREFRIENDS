@@ -71,7 +71,7 @@ h1{margin:0;font:700 clamp(56px,8vw,92px)/.92 Fredoka;color:#1b3a7a;transform:ro
 .opts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0 16px}
 .opts button{width:62px;height:62px;border-radius:50%;border:3px solid var(--line);background:#fff;padding:4px;cursor:pointer;display:grid;place-items:center;font:600 12px Prompt;color:#1b2a5e}
 .opts button.on{border-color:var(--blue);box-shadow:0 0 0 4px #2f7df633}
-input[type=text]{width:100%;padding:14px 16px;border-radius:14px;border:2px solid var(--line);font:500 16px Prompt;background:var(--card);color:var(--ink);text-align:center}
+input[type=text],input[type=password]{width:100%;padding:14px 16px;border-radius:14px;border:2px solid var(--line);font:500 16px Prompt;background:var(--card);color:var(--ink);text-align:center}
 .lbl{display:block;text-align:left;font-size:13px;color:var(--sub);margin:12px 0 6px}
 .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
 .side{background:var(--card);border-right:1px solid var(--line);padding:18px;display:flex;flex-direction:column;gap:12px}
@@ -440,10 +440,37 @@ input[type=text]{cursor:text!important}
 .planbtn:hover{filter:brightness(1.04)}
 @media (max-width:999px){.planbtn span{display:none}.planbtn{padding:8px 10px}}
 /* me marker: รูปโปรไฟล์ของผู้ใช้เอง */
-.mk.me .pa{width:58px;height:58px;background:#fff!important}
+.mk.me .pa{width:58px;height:58px}
 .mk.me .pa img{width:100%;height:100%;object-fit:cover;padding:0;border-radius:50%}
 .mk.me .pa img.petimg{object-fit:contain;padding:3px}
 #map{background:#e3ecf5}
+.fw{position:relative;display:inline-grid;place-items:center;border-radius:50%;flex:none;isolation:isolate;vertical-align:middle}
+.fw>.av{position:relative;z-index:1}
+.fw::before{content:"";position:absolute;inset:0;border-radius:50%;z-index:0;background:var(--g)}
+.fw::after{position:absolute;z-index:3;line-height:1;font-size:calc(var(--s)*.38);pointer-events:none}
+.f-sky{--g:linear-gradient(135deg,#bfe0ff,#2f7df6)}
+.f-pink{--g:linear-gradient(135deg,#ffd0de,#ff6b9a)}
+.f-gold{--g:conic-gradient(#ffe27a,#f0a800,#fff2b0,#f0a800,#ffe27a);box-shadow:0 0 12px #f0a80099}
+.f-mint{--g:linear-gradient(135deg,#c4f7e0,#2fbf8f)}
+.f-heart{--g:linear-gradient(135deg,#ffd0de,#ff5c8a)}
+.f-heart::after{content:"💗";right:-6%;bottom:-6%}
+.f-rainbow{--g:none;box-shadow:0 0 12px #8c6fe855}
+.f-rainbow::before{background:conic-gradient(#ff5c5c,#ffb84d,#ffe14d,#5ce08a,#4dc3ff,#8c6fe8,#ff5cc8,#ff5c5c);animation:frspin 4s linear infinite}
+@keyframes frspin{to{transform:rotate(360deg)}}
+.f-crown{--g:conic-gradient(#ffe27a,#f0a800,#fff2b0,#f0a800,#ffe27a);box-shadow:0 0 14px #f0a800aa}
+.f-crown::after{content:"👑";top:calc(var(--s)*-.24);left:50%;transform:translateX(-50%) rotate(-8deg);font-size:calc(var(--s)*.46)}
+.f-star{--g:linear-gradient(135deg,#d9ccff,#7b55e0 60%,#4a2fb8);box-shadow:0 0 12px #7b55e077}
+.f-star::after{content:"✨";right:-8%;top:-8%}
+.f-diamond{--g:linear-gradient(135deg,#8be6ff,#27b5e8 45%,#c9a8ff);box-shadow:0 0 14px #27b5e888}
+.f-diamond::after{content:"💎";right:-8%;top:-8%}
+.frg{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+.frb{border:2px solid var(--line);background:#fff;border-radius:16px;padding:12px 6px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;font:600 12.5px Prompt;color:#12306e}
+.frb.on{border-color:var(--blue);box-shadow:0 0 0 3px #2f7df633}
+.frb.lock{opacity:.62}
+.frb small{font:500 11px Prompt;color:#8896b5}
+.lgsep{display:flex;align-items:center;gap:10px;color:var(--sub);font-size:12.5px;margin:16px 0 0}.lgsep:before,.lgsep:after{content:"";flex:1;height:1px;background:var(--line)}
+.card .seg{margin:6px 0 4px}
+.card .btn-line+.btn-line{margin-top:8px}
 </style>
 </head>
 <body>
@@ -507,10 +534,20 @@ input[type=text]{cursor:text!important}
 <!-- LOGIN -->
 <section id="v-login" class="page hide"><div class="card">
 <svg width="150" height="90" viewBox="0 0 220 150" style="margin:-10px auto 0;display:block"><use href="#pair"/></svg>
-<h2>เข้าสู่ระบบ</h2><p>เลือกบัญชีที่ต้องการใช้เข้าสู่ WE ARE FRIENDS</p>
-<button class="oauth" data-login="google"><svg width="22" height="22" viewBox="0 0 48 48"><path fill="#4285F4" d="M45 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.7-2 5-4.3 6.5v5.4h7C42.6 36.6 45 31 45 24.5z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.3l-7-5.4c-2 1.3-4.500 2.100-7.500 2.100-5.800 0-10.700-3.900-12.400-9.200H4.400v5.600C8 41.100 15.400 46 24 46z"/><path fill="#FBBC05" d="M11.600 28.200c-.4-1.300-.7-2.700-.7-4.200s.3-2.900.7-4.200v-5.600H4.400C2.900 17.200 2 20.500 2 24s.9 6.800 2.400 9.800l7.200-5.600z"/><path fill="#EA4335" d="M24 10.600c3.300 0 6.200 1.100 8.500 3.300l6.400-6.400C34.900 3.900 29.900 2 24 2 15.400 2 8 6.900 4.400 14.200l7.200 5.600C13.300 14.500 18.200 10.600 24 10.600z"/></svg>เข้าสู่ระบบด้วย Google</button>
-<button class="oauth d" data-login="discord">🎮 เข้าสู่ระบบด้วย Discord</button>
-<p style="margin-top:18px;font-size:12px">* ต้นแบบนี้จำลองการล็อกอิน เมื่อทำเวอร์ชันจริงจะเชื่อมกับ Google/Discord OAuth</p>
+<h2>WE ARE FRIENDS</h2><p>เข้าสู่ระบบเพื่อใช้บัญชีเดิม เปิดเว็บใหม่ก็ยังเป็นรหัสเดิม</p>
+<div class="seg"><button id="lgTabIn" class="on" type="button">เข้าสู่ระบบ</button><button id="lgTabUp" type="button">สมัครสมาชิก</button></div>
+<label class="lbl" for="lgU">ชื่อผู้ใช้</label>
+<input type="text" id="lgU" autocomplete="username" maxlength="20" placeholder="a-z 0-9 _ (3-20 ตัว)" autocapitalize="none" spellcheck="false">
+<label class="lbl" for="lgPw">รหัสผ่าน</label>
+<input type="password" id="lgPw" autocomplete="current-password" maxlength="64" placeholder="อย่างน้อย 6 ตัว">
+<div id="lgP2w" class="hide"><label class="lbl" for="lgPw2">ยืนยันรหัสผ่าน</label><input type="password" id="lgPw2" autocomplete="new-password" maxlength="64" placeholder="พิมพ์รหัสผ่านอีกครั้ง"></div>
+<div id="lgErr" style="color:#d33;font-size:13px;min-height:20px;margin-top:8px" role="alert"></div>
+<button class="cta" id="lgGo" type="button" style="margin-top:2px;padding:14px 40px">เข้าสู่ระบบ</button>
+<button class="btn-line" id="lgImp" type="button" style="margin-top:10px;width:100%">นำเข้าบัญชีจากรหัสสำรอง</button>
+<div class="lgsep">หรือลองแบบจำลอง</div>
+<button class="oauth" data-login="google"><svg width="22" height="22" viewBox="0 0 48 48"><path fill="#4285F4" d="M45 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.7-2 5-4.3 6.5v5.4h7C42.6 36.6 45 31 45 24.5z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.3l-7-5.4c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.4-9.2H4.400v5.600C8 41.100 15.400 46 24 46z"/><path fill="#FBBC05" d="M11.600 28.200c-.4-1.300-.7-2.700-.7-4.200s.3-2.900.7-4.200v-5.600H4.400C2.900 17.200 2 20.500 2 24s.9 6.800 2.400 9.800l7.200-5.600z"/><path fill="#EA4335" d="M24 10.600c3.300 0 6.200 1.100 8.500 3.300l6.400-6.400C34.900 3.900 29.900 2 24 2 15.400 2 8 6.900 4.400 14.200l7.200 5.600C13.300 14.500 18.200 10.600 24 10.600z"/></svg>เข้าสู่ระบบด้วย Google (จำลอง)</button>
+<button class="oauth d" data-login="discord">🎮 เข้าสู่ระบบด้วย Discord (จำลอง)</button>
+<p style="margin-top:14px;font-size:12px">* บัญชีเก็บไว้ในเบราว์เซอร์เครื่องนี้ ถ้าจะย้ายไปเครื่องอื่นให้ใช้ “รหัสสำรองบัญชี” ในหน้าโปรไฟล์</p>
 <button class="btn-line" data-go="land">← กลับหน้าแรก</button>
 </div></section>
 
@@ -625,7 +662,7 @@ document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=
 document.querySelectorAll('[data-to]').forEach(b=>b.addEventListener('click',()=>{const t=document.getElementById(b.dataset.to);if(t)t.scrollIntoView({behavior:b.dataset.go?'auto':'smooth'})}));
 document.querySelectorAll('[data-faq]').forEach(b=>b.addEventListener('click',()=>{openFaq(+b.dataset.faq)}));
 document.querySelectorAll('[data-login]').forEach(b=>b.onclick=()=>{
- const p=b.dataset.login;S.prov=p;
+ const p=b.dataset.login;S.prov=p;S.acct=null;S.frame='';
  S.name=p==='google'?'สมชาย ใจดี':'FriendlyUser#1234';
  S.avatar=p;showSetup();
 });
@@ -634,7 +671,7 @@ function showSetup(){
 }
 function drawSetup(){
  $('#prevAv').innerHTML=av(S.avatar,112,$('#nm').value).replace('class="av"','class="av big"');
- const list=[[S.prov,'จาก '+(S.prov==='google'?'Google':'Discord')],['happy','ยิ้มแฮปปี้'],['wink','วิงค์'],['shock','ตกใจ'],['love','เขิน'],['up','อัปโหลด']];
+ const list=[...(S.prov?[[S.prov,'จาก '+(S.prov==='google'?'Google':'Discord')]]:[]),['happy','ยิ้มแฮปปี้'],['wink','วิงค์'],['shock','ตกใจ'],['love','เขิน'],['up','อัปโหลด']];
  $('#opts').innerHTML=list.map(([k,l])=>`<button data-k="${k}" class="${S.avatar===k?'on':''}" aria-label="${l}" title="${l}">${k==='up'?'📷':k===S.prov?av(k,46,$('#nm').value):av(k,46)}</button>`).join('');
  $('#opts').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   if(b.dataset.k==='up'){$('#file').click();return}
@@ -678,13 +715,96 @@ const hhmm=t=>new Date(t).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-d
 const ago=t=>{const s=Math.max(0,(Date.now()-t)/1000);if(s<90)return 'เมื่อสักครู่';if(s<3600)return Math.round(s/60)+' นาทีที่แล้ว';if(s<86400)return Math.round(s/3600)+' ชม.ที่แล้ว';return Math.round(s/86400)+' วันที่แล้ว'};
 const isOn=m=>m.loc&&Date.now()-m.loc.t<120000;
 const colorOf=s=>{let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return `hsl(${h%360} 60% 52%)`};
-function avh(a,size,name){
+const FRD={sky:{n:'ฟ้าใส',r:1,c1:'#2f7df6',c2:'#bfe0ff'},pink:{n:'ชมพูหวาน',r:1,c1:'#ff6b9a',c2:'#ffd0de'},gold:{n:'ทองเงา',r:1,c1:'#f0a800',c2:'#ffe27a'},mint:{n:'มิ้นต์',r:1,c1:'#2fbf8f',c2:'#c4f7e0'},heart:{n:'หัวใจ',r:1,c1:'#ff5c8a',c2:'#ffd0de'},rainbow:{n:'สายรุ้ง',r:2,c1:'#8c6fe8',c2:'#ffd54a'},crown:{n:'มงกุฎ',r:2,c1:'#f0a800',c2:'#fff0a0'},star:{n:'ดาวระยิบ',r:2,c1:'#7b55e0',c2:'#d9ccff'},diamond:{n:'เพชร',r:2,c1:'#27b5e8',c2:'#c9a8ff'}};
+const PR={free:0,pro:1,premium:2};
+const frOk=f=>!!(FRD[f]&&FRD[f].r<=PR[planKey()]);
+const myFr=()=>{const f=A.me&&A.me.frame;return f&&frOk(f)?f:''};
+const frSty=f=>FRD[f]?`;border-color:${FRD[f].c1};box-shadow:0 0 0 3px ${FRD[f].c2},0 4px 12px #1b2a5e40`:'';
+function avh(a,size,name,fr){
+ const h=avh0(a,size,name);
+ if(!fr||!FRD[fr])return h;
+ const pad=Math.max(3,Math.round(size*.08));
+ return `<span class="fw f-${fr}" style="--s:${size}px;padding:${pad}px">${h}</span>`;
+}
+function avh0(a,size,name){
  const st=`width:${size}px;height:${size}px`;
  if(PETS[a])return `<span class="av pet" style="${st}"><img class="pet" src="${PETS[a]}" alt="${PETN[a]}"></span>`;
  if(a&&a.startsWith('data:'))return `<span class="av" style="${st}"><img src="${a}" alt=""></span>`;
  return `<span class="av" style="${st};background:${colorOf(name)};color:#fff;font:700 ${Math.round(size*.42)}px Fredoka">${esc((name||'?').trim().charAt(0).toUpperCase())}</span>`;
 }
 const toast2=t=>toast(t);
+
+/* ---------- บัญชีผู้ใช้ (เก็บในเบราว์เซอร์ รหัสผ่านถูกแฮชด้วย PBKDF2) ---------- */
+const ACC={
+ all(){return LS.get('waf.accts',{})},
+ save(o){LS.set('waf.accts',o)},
+ async hash(pw,salt){const k=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveBits']);return b64(new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode(salt),iterations:100000,hash:'SHA-256'},k,256)))}
+};
+const UN=/^[a-z0-9_]{3,20}$/;
+function syncAcct(){
+ if(!A.me||!A.me.acct)return;
+ const all=ACC.all(),r=all[A.me.acct];if(!r)return;
+ r.me={name:A.me.name,avatar:A.me.avatar,frame:A.me.frame||''};r.groups=LS.get('waf.groups',[]);ACC.save(all);
+}
+async function acctCreate(u,pw,uid,me,groups){
+ const all=ACC.all();if(all[u])return 'ชื่อผู้ใช้นี้มีคนใช้แล้ว';
+ const salt=rnd(16);all[u]={u,salt,h:await ACC.hash(pw,salt),uid,me,groups:groups||[]};ACC.save(all);return null;
+}
+function backupCode(){syncAcct();const r=A.me&&A.me.acct&&ACC.all()[A.me.acct];return r?b64(enc.encode(JSON.stringify(r))):''}
+function importCode(c){
+ try{const r=JSON.parse(dec.decode(unb64(String(c).trim())));
+  if(!r||!UN.test(r.u||'')||!r.salt||!r.h||!r.uid||!r.me||typeof r.me.name!=='string')return null;
+  const all=ACC.all();all[r.u]={u:r.u,salt:String(r.salt),h:String(r.h),uid:String(r.uid),me:{name:String(r.me.name).slice(0,20),avatar:r.me.avatar,frame:FRD[r.me.frame]?r.me.frame:''},groups:Array.isArray(r.groups)?r.groups.filter(g=>g&&/^[a-z0-9]{16}$/.test(g.id)).map(g=>({id:g.id,name:String(g.name||'').slice(0,30),share:g.share!==false})):[]};
+  ACC.save(all);return r.u;
+ }catch(e){return null}
+}
+let lgMode='in';
+function lgSet(m){lgMode=m;$('#lgTabIn').classList.toggle('on',m==='in');$('#lgTabUp').classList.toggle('on',m==='up');$('#lgP2w').classList.toggle('hide',m==='in');$('#lgGo').textContent=m==='in'?'เข้าสู่ระบบ':'สมัครสมาชิก';$('#lgPw').autocomplete=m==='in'?'current-password':'new-password';$('#lgErr').textContent=''}
+$('#lgTabIn').onclick=()=>lgSet('in');$('#lgTabUp').onclick=()=>lgSet('up');
+async function lgSubmit(){
+ const e=$('#lgErr');e.textContent='';
+ if(!hasCrypto){e.textContent='เบราว์เซอร์นี้ไม่รองรับการเข้ารหัส กรุณาเปิดผ่าน https หรือ localhost';return}
+ const u=$('#lgU').value.trim().toLowerCase(),pw=$('#lgPw').value;
+ if(!UN.test(u)){e.textContent='ชื่อผู้ใช้ต้องเป็น a-z 0-9 หรือ _ ความยาว 3-20 ตัว';return}
+ if(pw.length<6){e.textContent='รหัสผ่านต้องมีอย่างน้อย 6 ตัว';return}
+ const btn=$('#lgGo');btn.disabled=true;
+ try{
+  if(lgMode==='up'){
+   if(pw!==$('#lgPw2').value){e.textContent='รหัสผ่านสองช่องไม่ตรงกัน';return}
+   const uid=rnd(12);const err=await acctCreate(u,pw,uid,{name:u,avatar:'happy',frame:''},[]);
+   if(err){e.textContent=err;return}
+   LS.set('waf.uid',uid);LS.set('waf.groups',[]);LS.del('waf.cur');LS.del('waf.me');A.me=null;
+   S.user=null;S.prov=null;S.acct=u;S.frame='';S.avatar='happy';S.name=u;showSetup();
+  }else{
+   const r=ACC.all()[u];
+   if(!r||await ACC.hash(pw,r.salt)!==r.h){e.textContent='ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';return}
+   S.user=true;S.prov=null;S.acct=u;S.name=r.me.name;S.avatar=r.me.avatar;S.frame=r.me.frame||'';
+   LS.set('waf.uid',r.uid);LS.set('waf.groups',r.groups||[]);LS.set('waf.cur',(r.groups&&r.groups[0]&&r.groups[0].id)||null);
+   A.me=null;$('#lgPw').value='';enterApp();
+  }
+ }finally{btn.disabled=false}
+}
+$('#lgGo').onclick=lgSubmit;
+['#lgU','#lgPw','#lgPw2'].forEach(i=>$(i).addEventListener('keydown',ev=>{if(ev.key==='Enter')lgSubmit()}));
+$('#lgImp').onclick=()=>{
+ openDlg(`<h3>นำเข้าบัญชีจากรหัสสำรอง</h3><p style="margin:0;color:var(--sub);line-height:1.7;font-size:14px">วางรหัสสำรองที่คัดลอกจากหน้าโปรไฟล์ของเครื่องเดิม แล้วล็อกอินด้วยชื่อผู้ใช้และรหัสผ่านเดิมได้เลย</p><div class="fld"><input type="text" id="impc" placeholder="วางรหัสสำรองบัญชี" autocomplete="off"></div><div id="impe" style="color:#d33;font-size:13px;min-height:18px"></div><button class="btn" id="impo">นำเข้า</button><button class="btn sec" id="gx">ปิด</button>`);
+ $('#impc').focus();$('#gx').onclick=closeDlg;
+ $('#impo').onclick=()=>{const u=importCode($('#impc').value);if(!u){$('#impe').textContent='รหัสสำรองไม่ถูกต้อง';return}closeDlg();$('#lgU').value=u;lgSet('in');toast('นำเข้าบัญชี @'+u+' แล้ว กรอกรหัสผ่านเพื่อเข้าสู่ระบบ');$('#lgPw').focus()};
+};
+function openLinkDlg(){
+ openDlg(`<h3>สร้างบัญชีให้ข้อมูลเดิม</h3><p style="margin:0;color:var(--sub);line-height:1.7;font-size:14px">กลุ่ม รหัส และโปรไฟล์ที่ใช้อยู่จะผูกกับบัญชีนี้ทั้งหมด ครั้งหน้าล็อกอินแล้วได้ข้อมูลเดิมกลับมา</p><div class="fld"><label for="lku">ชื่อผู้ใช้</label><input type="text" id="lku" maxlength="20" autocapitalize="none" placeholder="a-z 0-9 _"></div><div class="fld"><label for="lkp">รหัสผ่าน (อย่างน้อย 6 ตัว)</label><input type="password" id="lkp" maxlength="64" autocomplete="new-password"></div><div id="lke" style="color:#d33;font-size:13px;min-height:18px"></div><button class="btn" id="lko">สร้างบัญชี</button><button class="btn sec" id="gx">ปิด</button>`);
+ $('#gx').onclick=closeDlg;$('#lku').focus();
+ $('#lko').onclick=async()=>{
+  const u=$('#lku').value.trim().toLowerCase(),pw=$('#lkp').value,e=$('#lke');
+  if(!hasCrypto){e.textContent='ต้องเปิดผ่าน https หรือ localhost';return}
+  if(!UN.test(u)){e.textContent='ชื่อผู้ใช้ต้องเป็น a-z 0-9 หรือ _ ความยาว 3-20 ตัว';return}
+  if(pw.length<6){e.textContent='รหัสผ่านต้องมีอย่างน้อย 6 ตัว';return}
+  const err=await acctCreate(u,pw,A.me.uid,{name:A.me.name,avatar:A.me.avatar,frame:A.me.frame||''},LS.get('waf.groups',[]));
+  if(err){e.textContent=err;return}
+  A.me.acct=u;saveMe(true);closeDlg();toast('สร้างบัญชี @'+u+' แล้ว');
+ };
+}
+
 
 /* ---------- crypto: ทุกข้อความถูกเข้ารหัสด้วยรหัสกลุ่มก่อนส่ง ---------- */
 async function deriveGroup(id){
@@ -698,7 +818,7 @@ async function unseal(g,str){try{const u=unb64(str);const pt=await crypto.subtle
 
 /* ---------- state ---------- */
 function newG(id,name,share){return {id,name,share:share!==false,key:null,th:null,members:{},msgs:LS.get('waf.m.'+id,[]),acts:LS.get('waf.a.'+id,[]),meet:null,unread:0,near:{}}}
-function saveGroups(){LS.set('waf.groups',Object.values(A.groups).map(g=>({id:g.id,name:g.name,share:g.share})))}
+function saveGroups(){LS.set('waf.groups',Object.values(A.groups).map(g=>({id:g.id,name:g.name,share:g.share})));syncAcct()}
 async function addGroup(id,name,share){
  if(A.groups[id])return A.groups[id];
  const g=newG(id,name||'กลุ่มใหม่',share);A.groups[id]=g;
@@ -729,7 +849,7 @@ async function pub(g,kind,obj,opt={}){
  const payload=obj==null?'':await seal(g,obj);
  A.client.publish(topic,payload,{qos:0,retain:!!opt.retain});
 }
-const profObj=()=>({name:A.me.name,av:A.me.avatar});
+const profObj=()=>({name:A.me.name,av:A.me.avatar,fr:myFr()});
 function announce(g){pub(g,'p',profObj(),{retain:true,uid:A.me.uid})}
 async function onMsg(topic,payload){
  const p=topic.split('/');if(p[0]!==NS)return;
@@ -742,7 +862,7 @@ async function onMsg(topic,payload){
  }
  if(!text)return;
  const o=await unseal(g,text);if(!o)return;
- if(kind==='p'){const m=g.members[uid]||(g.members[uid]={});m.name=String(o.name||'เพื่อน').slice(0,24);m.av=o.av;refreshAll(g)}
+ if(kind==='p'){const m=g.members[uid]||(g.members[uid]={});m.name=String(o.name||'เพื่อน').slice(0,24);m.av=o.av;m.fr=FRD[o.fr]?o.fr:'';refreshAll(g)}
  else if(kind==='l'){const m=g.members[uid]||(g.members[uid]={name:'เพื่อน'});if(typeof o.lat!=='number'||typeof o.lng!=='number')return;m.loc={lat:o.lat,lng:o.lng,acc:o.acc||0,t:o.t||Date.now()};checkNear(g,uid);refreshAll(g)}
  else if(kind==='c'){if(o.uid===A.me.uid)return;if(g.msgs.some(x=>x.id===o.id))return;addMsg(g,o,true)}
  else if(kind==='e'){if(o.uid===A.me.uid)return;addAct(g,o)}
@@ -835,15 +955,15 @@ function initMap(){
  });
 }
 function setMeetMode(on){A.meetMode=on;$('#zMeet').classList.toggle('on',on);$('#mapHint').classList.toggle('hide',!on)}
-function mkIcon(av,name,sub,me){
+function mkIcon(av,name,sub,me,fr){
  const inner=PETS[av]?`<img src="${PETS[av]}" alt="">`:(av&&av.startsWith('data:'))?`<img src="${av}" alt="" style="padding:0;object-fit:cover">`:esc((name||'?').charAt(0).toUpperCase());
  const bg=(PETS[av]||(av&&av.startsWith('data:')))?'#fff':colorOf(name);
- return L.divIcon({className:'mkw',iconSize:[0,0],iconAnchor:[0,0],html:`<div class="mk ${me?'self':''}"><div class="pa" style="background:${bg}">${inner}</div><div class="lb">${esc(name)}${sub?`<i>${esc(sub)}</i>`:''}</div></div>`});
+ return L.divIcon({className:'mkw',iconSize:[0,0],iconAnchor:[0,0],html:`<div class="mk ${me?'self':''}"><div class="pa" style="background:${bg}${frSty(fr)}">${inner}</div><div class="lb">${esc(name)}${sub?`<i>${esc(sub)}</i>`:''}</div></div>`});
 }
 function meIcon(){
  const av=A.me.avatar,nm=A.me.name,img=!!(PETS[av]||(av&&String(av).startsWith('data:')));
  const inner=PETS[av]?`<img class="petimg" src="${PETS[av]}" alt="">`:img?`<img src="${av}" alt="">`:esc((nm||'?').charAt(0).toUpperCase());
- return L.divIcon({className:'mkw',iconSize:[0,0],iconAnchor:[0,0],html:`<div class="mk me"><div class="bb">ฉันอยู่ที่นี่</div><div class="ring"></div><div class="pa" style="background:${img?'#fff':colorOf(nm)}">${inner}</div></div>`})
+ return L.divIcon({className:'mkw',iconSize:[0,0],iconAnchor:[0,0],html:`<div class="mk me"><div class="bb">ฉันอยู่ที่นี่</div><div class="ring"></div><div class="pa" style="background:${img?'#fff':colorOf(nm)}${frSty(myFr())}">${inner}</div></div>`})
 }
 function drawMarkers(){
  if(!A.map)return;
@@ -857,7 +977,7 @@ function drawMarkers(){
  if(A.pos){put('me',A.pos.lat,A.pos.lng,meIcon(),1000);
   if(A.meCircle)A.meCircle.setLatLng([A.pos.lat,A.pos.lng]).setRadius((A.pos.acc>500?1:Math.max(A.pos.acc,5)));
   else A.meCircle=L.circle([A.pos.lat,A.pos.lng],{radius:(A.pos.acc>500?1:Math.max(A.pos.acc,5)),color:'#2f7df6',weight:1,fillOpacity:.1,interactive:false}).addTo(A.map)}
- if(g)Object.entries(g.members).forEach(([u,m])=>{if(!m.loc)return;const d=(A.pos?fmtD(hav(A.pos,m.loc)):'')+(isOn(m)?'':' · '+ago(m.loc.t));put(u,m.loc.lat,m.loc.lng,mkIcon(m.av,m.name,d))});
+ if(g)Object.entries(g.members).forEach(([u,m])=>{if(!m.loc)return;const d=(A.pos?fmtD(hav(A.pos,m.loc)):'')+(isOn(m)?'':' · '+ago(m.loc.t));put(u,m.loc.lat,m.loc.lng,mkIcon(m.av,m.name,d,false,m.fr))});
  Object.keys(A.mk).forEach(id=>{if(!keep[id]){A.map.removeLayer(A.mk[id]);delete A.mk[id]}});
  if(A.meetMk){A.map.removeLayer(A.meetMk);A.meetMk=null}
  if(g&&g.meet){A.meetMk=L.marker([g.meet.lat,g.meet.lng],{icon:L.divIcon({className:'mkw',iconSize:[0,0],html:`<div class="mk"><div class="meetm">🚩</div><div class="lb" style="margin-top:-2px">จุดนัดพบ${A.pos?`<i>${fmtD(hav(A.pos,g.meet))} · ${esc(g.meet.by)}</i>`:''}</div></div>`})}).addTo(A.map);
@@ -917,9 +1037,9 @@ function renderChat(){
  const msgs=A.msgQ?g.msgs.filter(m=>(m.text||'').toLowerCase().includes(A.msgQ)):g.msgs;
  $('#msgs').innerHTML=msgs.length?msgs.map(m=>{
   const me=m.uid===A.me.uid;const mm=g.members[m.uid];
-  const av=me?A.me.avatar:(mm&&mm.av)||m.av;const nm=me?A.me.name:(mm&&mm.name)||m.name;
+  const av=me?A.me.avatar:(mm&&mm.av)||m.av;const fr=me?myFr():(mm&&mm.fr);const nm=me?A.me.name:(mm&&mm.name)||m.name;
   const body=m.st&&PETS[m.st]?`<img class="sticker" src="${PETS[m.st]}" alt="${PETN[m.st]}">`:`<div class="bub">${esc(m.text)}</div>`;
-  return `<div class="m ${me?'mine':''}">${me?'':avh(av,38,nm)}<div class="bx">${me?'':`<div class="nm">${esc(nm)}</div>`}<div class="row2">${body}<span class="tm">${hhmm(m.t)}</span></div></div></div>`}).join('')
+  return `<div class="m ${me?'mine':''}">${me?'':avh(av,38,nm,fr)}<div class="bx">${me?'':`<div class="nm">${esc(nm)}</div>`}<div class="row2">${body}<span class="tm">${hhmm(m.t)}</span></div></div></div>`}).join('')
   :'<div class="sys">เริ่มคุยกันได้เลย ข้อความถูกเข้ารหัสระหว่างสมาชิกในกลุ่มเท่านั้น</div>';
  if(near||!renderChat.done)$('#msgs').scrollTop=$('#msgs').scrollHeight;renderChat.done=1;
  if(!$('#stk').children.length){$('#stk').innerHTML=`<div class="stkr">${Object.keys(PETS).map(k=>`<button data-s="${k}" aria-label="${PETN[k]}"><img src="${PETS[k]}" alt=""></button>`).join('')}</div><div class="emor">${EMO.map(e=>`<button type="button" data-e="${e}">${e}</button>`).join('')}</div>`;
@@ -963,11 +1083,11 @@ function renderMapHead(){
 }
 function renderMembers(){
  const g=cg();if(!g){A._mh=null;$('#mlist').innerHTML='<div class="empty">เลือกกลุ่มเพื่อดูสมาชิก</div>';return}
- const me=`<button class="mi" data-u="me">${avh(A.me.avatar,46,A.me.name)}<span class="tx"><b>${esc(A.me.name)} (ฉัน)</b><small>${A.pos?(g.share?`กำลังแชร์ · แม่นยำ ±${Math.round(A.pos.acc)} ม.`:'ปิดการแชร์ตำแหน่งอยู่'):A.geoErr?'ยังไม่ได้ตำแหน่ง GPS':'กำลังหาตำแหน่ง...'}</small></span><span class="stt crown ${A.pos&&g.share?'on':''}">${A.pos&&g.share?'👑 อยู่ด้วยกัน':'ปิดอยู่'}</span></button>`;
+ const me=`<button class="mi" data-u="me">${avh(A.me.avatar,46,A.me.name,myFr())}<span class="tx"><b>${esc(A.me.name)} (ฉัน)</b><small>${A.pos?(g.share?`กำลังแชร์ · แม่นยำ ±${Math.round(A.pos.acc)} ม.`:'ปิดการแชร์ตำแหน่งอยู่'):A.geoErr?'ยังไม่ได้ตำแหน่ง GPS':'กำลังหาตำแหน่ง...'}</small></span><span class="stt crown ${A.pos&&g.share?'on':''}">${A.pos&&g.share?'👑 อยู่ด้วยกัน':'ปิดอยู่'}</span></button>`;
  const rows=mapMembers(g).map(m=>{
   const o=isOn(m);
   const sub=m.loc?`${A.pos?fmtD(hav(A.pos,m.loc))+' · ':''}${ago(m.loc.t)}`:'ไม่ได้แชร์ตำแหน่ง';
-  return `<button class="mi" data-u="${esc(m.u)}">${avh(m.av,46,m.name)}<span class="tx"><b>${esc(m.name||'เพื่อน')}</b><small>${esc(sub)}</small></span><span class="chv ${o?'on':''}" title="${o?'ออนไลน์':m.loc?'ออฟไลน์':''}">›</span></button>`}).join('');
+  return `<button class="mi" data-u="${esc(m.u)}">${avh(m.av,46,m.name,m.fr)}<span class="tx"><b>${esc(m.name||'เพื่อน')}</b><small>${esc(sub)}</small></span><span class="chv ${o?'on':''}" title="${o?'ออนไลน์':m.loc?'ออฟไลน์':''}">›</span></button>`}).join('');
  let meet='';if(g.meet)meet=`<button class="mi" data-u="meet"><span class="av" style="width:46px;height:46px;background:#fff0f0;font-size:24px">🚩</span><span class="tx"><b>จุดนัดพบ</b><small>${A.pos?fmtD(hav(A.pos,g.meet))+' · ':''}ปักโดย ${esc(g.meet.by)}</small></span><span class="stt on" data-del="1">ลบ</span></button>`;
  const mhtml=me+rows+meet+(!rows?`<div class="empty">ยังไม่มีเพื่อนในกลุ่มนี้<br>กดปุ่มลิงก์เชิญที่หน้าแชท แล้วส่งให้เพื่อน</div>`:'');
   if(A._mh===mhtml)return;A._mh=mhtml;$('#mlist').innerHTML=mhtml;
@@ -984,13 +1104,13 @@ const ACTI={join:'👋',sh_on:'📍',sh_off:'⏸',meet:'🚩',near:'🎉'};
 function renderActivity(){
  const g=cg();
  if(!g){$('#actBody').innerHTML='<div class="empty">เลือกกลุ่มเพื่อดูกิจกรรม</div>';return}
- $('#actBody').innerHTML=g.acts.length?g.acts.map(a=>{const mm=g.members[a.uid];return `<div class="act">${avh(a.uid===A.me.uid?A.me.avatar:mm&&mm.av,40,a.name)}<div><div>${ACTI[a.k]||'•'} ${esc((ACTT[a.k]||(()=>a.k))(a))}</div><div class="t">${ago(a.t)}</div></div></div>`}).join(''):'<div class="empty">ยังไม่มีกิจกรรม<br>เมื่อเพื่อนเข้ากลุ่ม แชร์ตำแหน่ง หรือเดินมาใกล้กัน จะแสดงที่นี่</div>';
+ $('#actBody').innerHTML=g.acts.length?g.acts.map(a=>{const mm=g.members[a.uid];return `<div class="act">${avh(a.uid===A.me.uid?A.me.avatar:mm&&mm.av,40,a.name,a.uid===A.me.uid?myFr():mm&&mm.fr)}<div><div>${ACTI[a.k]||'•'} ${esc((ACTT[a.k]||(()=>a.k))(a))}</div><div class="t">${ago(a.t)}</div></div></div>`}).join(''):'<div class="empty">ยังไม่มีกิจกรรม<br>เมื่อเพื่อนเข้ากลุ่ม แชร์ตำแหน่ง หรือเดินมาใกล้กัน จะแสดงที่นี่</div>';
 }
 function inviteLink(g){const base=location.protocol==='file:'?location.href.split('#')[0]:location.origin+location.pathname;return base+'#join='+g.id+'.'+encodeURIComponent(g.name)}
 function renderHome(){
  const g=cg();
  const sh=Object.values(A.groups).filter(x=>x.share).length;
- $('#homeBody').innerHTML=`<div class="hsec" style="display:flex;gap:14px;align-items:center">${avh(A.me.avatar,64,A.me.name)}<div><h4>สวัสดี ${esc(A.me.name)}</h4><p>${A.pos?`GPS พร้อมใช้งาน แม่นยำ ±${Math.round(A.pos.acc)} เมตร`:A.geoErr?'ยังไม่ได้รับอนุญาตให้ใช้ GPS':'กำลังหาตำแหน่งของคุณ...'}<br>แชร์ตำแหน่งอยู่ ${sh} จาก ${Object.keys(A.groups).length} กลุ่ม</p></div></div>
+ $('#homeBody').innerHTML=`<div class="hsec" style="display:flex;gap:14px;align-items:center">${avh(A.me.avatar,64,A.me.name,myFr())}<div><h4>สวัสดี ${esc(A.me.name)}</h4><p>${A.pos?`GPS พร้อมใช้งาน แม่นยำ ±${Math.round(A.pos.acc)} เมตร`:A.geoErr?'ยังไม่ได้รับอนุญาตให้ใช้ GPS':'กำลังหาตำแหน่งของคุณ...'}<br>แชร์ตำแหน่งอยู่ ${sh} จาก ${Object.keys(A.groups).length} กลุ่ม</p></div></div>
  ${g?`<div class="hsec"><h4>เชิญเพื่อนเข้า “${esc(g.name)}”</h4><p>ส่งรหัสหรือลิงก์นี้ให้เพื่อน เมื่อเพื่อนเข้าร่วมจะเห็นตำแหน่งกันแบบเรียลไทม์</p><div class="code"><input type="text" readonly value="${esc(g.id)}" aria-label="รหัสกลุ่ม"><button class="btn" id="cpC">คัดลอกรหัส</button></div><div class="code"><input type="text" readonly value="${esc(inviteLink(g))}" aria-label="ลิงก์เชิญ"><button class="btn sec" id="cpL">คัดลอกลิงก์</button></div></div>`:''}
  <div class="hsec"><h4>เริ่มต้น</h4><p>สร้างกลุ่มใหม่หรือเข้าร่วมกลุ่มของเพื่อนด้วยรหัส</p><div class="code"><button class="btn" id="hC">สร้างกลุ่ม</button><button class="btn sec" id="hJ">เข้าร่วมด้วยรหัส</button></div></div>
  <div class="hsec"><h4>ความเป็นส่วนตัว</h4><p>ตำแหน่งและข้อความถูกเข้ารหัสด้วยรหัสกลุ่มก่อนส่ง ผู้ให้บริการเครือข่ายอ่านไม่ได้ ใครมีรหัสกลุ่มจะเห็นตำแหน่งที่คุณแชร์ จึงควรส่งรหัสให้เฉพาะคนที่ไว้ใจ และปิดแชร์ได้ทุกเมื่อ</p></div>`;
@@ -1000,18 +1120,23 @@ function renderHome(){
 }
 function renderProfile(){
  const sel=A.me.avatar;
- $('#profBody').innerHTML=`<div style="display:flex;justify-content:center">${avh(sel,112,A.me.name)}</div>
+ $('#profBody').innerHTML=`<div style="display:flex;justify-content:center">${avh(sel,112,A.me.name,myFr())}</div>
  <div class="pav" style="justify-content:center">${Object.keys(PETS).map(k=>`<button data-a="${k}" class="${sel===k?'on':''}" aria-label="${PETN[k]}" title="${PETN[k]}">${avh(k,56,'')}</button>`).join('')}<button data-a="up" aria-label="อัปโหลดรูป" title="อัปโหลดรูปของฉัน" style="font-size:24px">📷</button></div>
+ <div class="fld"><label>กรอบโปรไฟล์ <small style="color:#8896b5">(แพลนปัจจุบัน: ${PLANS[planKey()].n})</small></label><div class="frg">${[['',{n:'ไม่มีกรอบ',r:0}],...Object.entries(FRD)].map(([k,f])=>{const ok=!k||frOk(k);const on=(A.me.frame||'')===k;return `<button type="button" class="frb ${on?'on':''} ${ok?'':'lock'}" data-f="${k}" aria-label="${f.n}">${avh(sel,52,A.me.name,k)}<span>${ok?'':'🔒 '}${f.n}</span><small>${f.r===0?'ฟรี':f.r===1?'แพลนโปร':'พรีเมียม'}</small></button>`}).join('')}</div></div>
  <div class="fld"><label for="pn">ชื่อที่แสดงในกลุ่ม</label><input type="text" id="pn" maxlength="20" value="${esc(A.me.name)}"></div>
  <button class="btn" id="psave">บันทึกโปรไฟล์</button>
  <hr style="border:0;border-top:1px solid var(--line);width:100%">
+ ${A.me.acct?`<div class="hsec"><h4>บัญชีของฉัน: @${esc(A.me.acct)}</h4><p>เปิดเว็บใหม่ยังเป็นบัญชีเดิม กลุ่มและโปรไฟล์ถูกเก็บไว้ในบัญชีนี้ ถ้าจะย้ายไปเครื่องอื่นให้คัดลอกรหัสสำรองไปนำเข้าที่หน้าล็อกอิน</p><div class="code"><button type="button" class="btn sec" id="bkp">คัดลอกรหัสสำรองบัญชี</button></div></div>`:`<div class="hsec"><h4>ยังไม่ได้สร้างบัญชี</h4><p>สร้างบัญชีเพื่อล็อกอินกลับมาใช้ข้อมูลเดิมได้ทุกครั้ง กลุ่มที่มีอยู่จะถูกผูกไว้ให้อัตโนมัติ</p><div class="code"><button type="button" class="btn" id="mkacc">สร้างบัญชี</button></div></div>`}
  <div class="fld"><label>GPS ของเครื่องนี้</label><div class="hsec" style="padding:12px 14px">${A.pos?`พบตำแหน่งแล้ว ความแม่นยำ ±${Math.round(A.pos.acc)} ม.`:A.geoErr?'ยังไม่ได้รับอนุญาตหรือหาตำแหน่งไม่ได้':'กำลังหาตำแหน่ง...'}</div></div>
  <button class="btn red" id="pout">ออกจากระบบ</button>`;
  $('#profBody').querySelectorAll('.pav button').forEach(b=>b.onclick=()=>{if(b.dataset.a==='up'){$('#file').click();return}A.me.avatar=b.dataset.a;saveMe(true)});
  $('#psave').onclick=()=>{const n=$('#pn').value.trim();if(!n){toast('กรุณาตั้งชื่อก่อน');return}A.me.name=n;saveMe(true);toast('บันทึกแล้ว')};
  $('#pout').onclick=logout;
+ $('#profBody').querySelectorAll('.frb').forEach(b=>b.onclick=()=>{const k=b.dataset.f;if(k&&!frOk(k)){toast('กรอบนี้ใช้ได้กับแพลน'+(FRD[k].r===1?'โปรขึ้นไป':'พรีเมียม'));setTab('plan');return}A.me.frame=k;saveMe(true);toast(k?'ใช้กรอบ'+FRD[k].n+'แล้ว':'เอากรอบออกแล้ว')});
+ const bk=$('#bkp');if(bk)bk.onclick=async()=>{const c=backupCode();try{await navigator.clipboard.writeText(c);toast('คัดลอกรหัสสำรองแล้ว เก็บไว้ให้ปลอดภัย')}catch(e){openDlg('<h3>รหัสสำรองบัญชี</h3><div class="fld"><input type="text" readonly value="'+esc(c)+'"></div><button class="btn sec" id="gx">ปิด</button>');$('#gx').onclick=closeDlg}};
+ const mk=$('#mkacc');if(mk)mk.onclick=openLinkDlg;
 }
-function saveMe(rerender){LS.set('waf.me',A.me);Object.values(A.groups).forEach(announce);$('#meBtn').innerHTML=avh(A.me.avatar,40,A.me.name);if(rerender){renderProfile();renderAll(true)}}
+function saveMe(rerender){LS.set('waf.me',A.me);syncAcct();Object.values(A.groups).forEach(announce);$('#meBtn').innerHTML=avh(A.me.avatar,40,A.me.name,myFr());if(rerender){renderProfile();renderAll(true)}}
 function renderAll(skipProfile){renderTabs();renderGroups();renderChat();renderMembers();renderMapHead();renderActivity();renderHome();if(!skipProfile)renderProfile();drawMarkers()}
 
 /* ---------- dialogs ---------- */
@@ -1111,14 +1236,14 @@ setInterval(()=>{
 /* ---------- boot ---------- */
 async function enterApp(){
  if(!A.me){A.me=LS.get('waf.me',null)}
- if(S&&S.user&&S.name){A.me={name:S.name,avatar:(S.avatar&&String(S.avatar).startsWith('data:'))||PETS[S.avatar]?S.avatar:'happy'}}
+ if(S&&S.user&&S.name){A.me={name:S.name,avatar:(S.avatar&&String(S.avatar).startsWith('data:'))||PETS[S.avatar]?S.avatar:'happy',acct:S.acct||null,frame:S.frame||''}}
  A.me.uid=LS.get('waf.uid',null)||rnd(12);LS.set('waf.uid',A.me.uid);
- LS.set('waf.me',A.me);
+ LS.set('waf.me',A.me);syncAcct();
  show('home');
  const stored=LS.get('waf.groups',[]);
  for(const g of stored){await addGroup(g.id,g.name,g.share)}
  A.cur=A.groups[LS.get('waf.cur',null)]?LS.get('waf.cur'):(Object.keys(A.groups)[0]||null);
- $('#meBtn').innerHTML=avh(A.me.avatar,40,A.me.name);$('#meBtn').onclick=()=>setTab('profile');
+ $('#meBtn').innerHTML=avh(A.me.avatar,40,A.me.name,myFr());$('#meBtn').onclick=()=>setTab('profile');
  renderAll();
  initMap();
  if(!hasCrypto)banner('เบราว์เซอร์นี้ไม่รองรับการเข้ารหัส ฟีเจอร์แชร์กับเพื่อนจะใช้ไม่ได้ กรุณาเปิดผ่าน https','err');
@@ -1130,7 +1255,7 @@ async function enterApp(){
 function logout(){
  Object.values(A.groups).forEach(g=>{if(g.share)pub(g,'l',null,{retain:true,uid:A.me.uid})});
  stopGeo();try{A.client&&A.client.end(true)}catch(e){}A.client=null;
- LS.del('waf.me');S.user=null;A.me=null;A.groups={};A.thMap={};A.pos=null;A.cur=null;
+ syncAcct();const wasAcct=!!(A.me&&A.me.acct);LS.del('waf.me');if(wasAcct){LS.del('waf.groups');LS.del('waf.cur');LS.del('waf.uid')}S.user=null;S.acct=null;A.me=null;A.groups={};A.thMap={};A.pos=null;A.cur=null;
  if(A.map){Object.values(A.mk).forEach(m=>A.map.removeLayer(m));A.mk={}}
  show('land');
 }
@@ -1173,7 +1298,7 @@ function openFaq(i){
 document.querySelectorAll('[data-go="faq"]').forEach(b=>b.addEventListener('click',()=>openFaq(0)));
 (function boot(){
  const me=LS.get('waf.me',null);checkHash();
- if(me&&me.name){A.me=me;S.user=true;S.name=me.name;S.avatar=me.avatar;enterApp()}
+ if(me&&me.name){A.me=me;S.user=true;S.name=me.name;S.avatar=me.avatar;S.acct=me.acct||null;S.frame=me.frame||'';enterApp()}
  else if(A.pending){/* ให้ผู้ใช้ล็อกอินก่อน แล้วค่อยเข้ากลุ่ม */const t=$('#toast');}
 })();
 
