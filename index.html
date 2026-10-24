@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>We Are Friends – อยู่ไหน...ก็ไม่ห่างกัน</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Mali:wght@500;700&family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
 :root{--bg:#fff;--ink:#1b2a5e;--sub:#4a5578;--card:#fff;--line:#e3e9f5;--blue:#2f7df6;--yellow:#fcc419;--sky:#dff0ff;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -125,6 +126,147 @@ a,button,.hs,[data-go],[data-to],label,.opts button{cursor:url(data:image/png;ba
 .opts button.on .av{animation:boing .55s ease-out}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 input[type=text]{cursor:text!important}
+/* ===== APP ===== */
+.wa nav{position:static;z-index:auto;background:none;border:0}
+.wa-bottom{background:var(--card)!important;border-top:1px solid var(--line)!important}
+.wa{height:100dvh;display:flex;flex-direction:column;background:linear-gradient(#cfe7fb,#e9f5ff 40%,#dcecfb);color:var(--ink)}
+.wa.hide{display:none!important}
+.wa-top{display:flex;align-items:center;gap:20px;padding:8px 20px;background:#ffffffb0;backdrop-filter:blur(8px);border-bottom:1px solid var(--line);flex:none}
+.wa-logo{font-size:19px;white-space:nowrap}.wa-logo svg{width:50px;height:36px}.wa-logo small{font-size:11px}
+.wa-tabs{display:flex;gap:6px;margin:0 auto}
+.wa-tabs button,.wa-bottom button{border:0;background:none;color:var(--sub);font:500 13px Prompt;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 14px;border-radius:14px;border-bottom:3px solid transparent;position:relative}
+.wa-tabs button span,.wa-bottom button span{font-size:20px;line-height:1}
+.wa-tabs button.on,.wa-bottom button.on{color:var(--blue);border-bottom-color:var(--blue)}
+.wa-tabs button:focus-visible,.wa-bottom button:focus-visible,.icb:focus-visible,.chip:focus-visible,.mapctl button:focus-visible{outline:3px solid #2f7df6;outline-offset:2px}
+.wa-me{display:flex;align-items:center;gap:12px;margin-left:auto}
+.wa-meb{border:0;background:none;padding:0;cursor:pointer;border-radius:50%}
+.net{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--sub);background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 10px;white-space:nowrap}
+.net i{width:8px;height:8px;border-radius:50%;background:#f0a800}.net.ok i{background:#2fbf6b}.net.bad i{background:#e5484d}
+.banner{margin:10px 16px 0;padding:10px 14px;border-radius:14px;background:#fff4d6;color:#5a4300;font-size:14px;line-height:1.6;border:1px solid #f1d98a;flex:none}
+.banner.err{background:#ffe3e3;color:#7a1f1f;border-color:#f0b4b4}
+.wa-body{flex:1;min-height:0;display:grid;gap:14px;padding:14px;grid-template-columns:330px minmax(0,1fr) 440px}
+.pane{background:var(--card);border-radius:22px;box-shadow:0 6px 24px #1b2a5e14;display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden}
+.ph{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);flex:none}
+.ph h3{margin:0;font:700 18px Prompt}.ph small{color:var(--sub);font-weight:400;font-size:12px;display:block}
+.chh h3{font-size:17px}
+.icb{width:38px;height:38px;border-radius:50%;border:0;background:#e8f1ff;color:var(--blue);font-size:20px;cursor:pointer;margin-left:auto;flex:none;display:grid;place-items:center}
+.pbody{padding:18px;overflow:auto;flex:1;min-height:0;display:flex;flex-direction:column;gap:14px}
+#pRight{display:flex;flex-direction:column;gap:14px;min-height:0;min-width:0}
+#pMap{flex:0 0 46%}#pMembers{flex:1}
+.gpsic{width:42px;height:42px;border-radius:50%;background:#e3eefc;display:grid;place-items:center;font-size:20px;flex:none}
+.mapact{margin-left:auto}
+.chip{border:0;border-radius:20px;padding:8px 16px;font:600 13px Prompt;cursor:pointer;background:#eef2fa;color:var(--sub)}
+.chip.on{background:var(--blue);color:#fff}
+.mapwrap{position:relative;flex:1;min-height:0;background:#e3ecf5}
+#map{position:absolute;inset:0}
+.mapctl{position:absolute;right:10px;bottom:12px;z-index:500;display:flex;flex-direction:column;gap:8px}
+.mapctl button{width:40px;height:40px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 10px #0003;font-size:19px;cursor:pointer;color:#1b2a5e}
+.mapctl button.on{background:var(--blue);color:#fff}
+.maphint{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:500;background:#1b2a5e;color:#fff;border-radius:20px;padding:7px 16px;font-size:13px}
+.glist{overflow:auto;padding:10px;display:flex;flex-direction:column;gap:6px;flex:1;min-height:0}
+.gi{display:flex;gap:12px;align-items:center;padding:10px;border-radius:16px;border:2px solid transparent;background:none;cursor:pointer;text-align:left;color:var(--ink);font-family:Prompt;width:100%}
+.gi.on{background:#e8f1ff}.gi:hover{background:#eef5ff}
+.gi .tx{min-width:0;flex:1}.gi b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gi small{display:block;color:var(--sub);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gi .meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:11.5px;color:var(--sub)}
+.badge{background:var(--blue);color:#fff;border-radius:12px;min-width:22px;padding:2px 7px;font:600 12px Prompt;text-align:center}
+.empty{color:var(--sub);text-align:center;padding:26px 16px;line-height:1.8;font-size:14px}
+.msgs{flex:1;min-height:0;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(#f5faff,#fff)}
+.m{display:flex;gap:10px;align-items:flex-end;max-width:86%}.m.mine{align-self:flex-end;flex-direction:row-reverse}
+.m .nm{font-size:12px;color:var(--sub);margin:0 4px 3px}
+.bub{background:#eaf2fd;border-radius:18px 18px 18px 6px;padding:10px 14px;line-height:1.55;font-size:15px;overflow-wrap:anywhere;color:#1b2a5e}
+.m.mine .bub{background:var(--blue);color:#fff;border-radius:18px 18px 6px 18px}
+.m .tm{font-size:11px;color:var(--sub);white-space:nowrap}
+.m .bx{min-width:0;display:flex;flex-direction:column}.m.mine .bx{align-items:flex-end}
+.m .row2{display:flex;gap:8px;align-items:flex-end}.m.mine .row2{flex-direction:row-reverse}
+.sticker{width:112px;height:112px;object-fit:contain}
+.sys{align-self:center;background:#eef2fa;color:var(--sub);font-size:12.5px;border-radius:14px;padding:5px 14px}
+.cin{display:flex;gap:10px;align-items:center;padding:12px 14px;border-top:1px solid var(--line);flex:none}
+.cin input{flex:1;min-width:0;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:24px;padding:11px 16px;font:400 15px Prompt;text-align:left}
+.cin .icb{margin:0;background:none}
+.send{width:44px;height:44px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:18px;cursor:pointer;flex:none}
+.stk{display:flex;gap:10px;justify-content:center;padding:10px;border-top:1px solid var(--line);flex:none}
+.stk button{border:2px solid var(--line);background:#fff;border-radius:16px;padding:6px;cursor:pointer;width:76px;height:76px}.stk img{width:100%;height:100%;object-fit:contain}
+.mlist{overflow:auto;padding:10px;display:flex;flex-direction:column;gap:6px;flex:1;min-height:0}
+.mi{display:flex;gap:12px;align-items:center;padding:9px 12px;border-radius:16px;background:#f5f9ff;border:2px solid transparent;cursor:pointer;color:var(--ink);font-family:Prompt;text-align:left;width:100%}
+.mi:hover{border-color:#cfe0fa}.mi .tx{flex:1;min-width:0}.mi b{display:block;font-size:15px}.mi small{color:var(--sub);font-size:12.5px;display:block}
+.mi .stt{font-size:11.5px;border-radius:12px;padding:3px 10px;background:#e6e9f0;color:var(--sub);white-space:nowrap}.mi .stt.on{background:#d9f5e5;color:#17703f}
+.av.pet{background:#fff}
+.av img.pet{object-fit:contain;padding:4px 3px 3px;background:#fff}
+.mk{position:absolute;left:0;top:0;width:max-content;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-23px)}
+.mk .pa{width:46px;height:46px;border-radius:50%;border:3px solid #fff;box-shadow:0 3px 10px #0004;background:#fff;overflow:hidden;display:grid;place-items:center;font:700 18px Fredoka;color:#fff}
+.mk .pa img{width:100%;height:100%;object-fit:contain;padding:3px}
+.mk .lb{margin-top:3px;background:#ffffffee;border-radius:10px;padding:1px 8px;font:600 11px/1.35 Prompt;color:#1b2a5e;text-align:center;white-space:nowrap;box-shadow:0 1px 5px #0003}
+.mk .lb i{display:block;font-style:normal;font-weight:400;color:#4a5578}
+.mk.self .pa{border-color:#2f7df6}
+.mk:hover .pa{animation:boing .55s ease-out}
+.leaflet-marker-icon.mkw{background:none;border:0}
+.meetm{font-size:34px;line-height:1;margin-top:-12px;filter:drop-shadow(0 3px 3px #0004)}
+.hsec{background:#f5f9ff;border-radius:18px;padding:16px 18px;line-height:1.75}
+.hsec h4{margin:0 0 6px;font:700 16px Prompt}
+.hsec p{margin:0;color:var(--sub);font-size:14px}
+.code{display:flex;gap:8px;align-items:center;margin-top:10px}
+.code input{flex:1;min-width:0;font:500 13px ui-monospace,monospace;text-align:left;padding:10px 12px;border-radius:12px}
+.btn{border:0;background:var(--blue);color:#fff;border-radius:14px;padding:11px 18px;font:600 14px Prompt;cursor:pointer;white-space:nowrap}
+.btn.sec{background:#e8f1ff;color:var(--blue)}.btn.red{background:#ffe3e3;color:#b3261e}
+.act{display:flex;gap:12px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--line)}
+.act .t{font-size:12px;color:var(--sub)}
+.fld{display:flex;flex-direction:column;gap:6px;text-align:left}
+.fld label{font-size:13px;color:var(--sub)}
+.fld input{text-align:left}
+.pav{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.pav button{width:66px;height:66px;border-radius:50%;border:3px solid var(--line);background:#fff;padding:0;cursor:pointer;display:grid;place-items:center;overflow:hidden}
+.pav button.on{border-color:var(--blue);box-shadow:0 0 0 4px #2f7df633}
+.dlg{position:fixed;inset:0;z-index:2000;background:#0a143a88;display:grid;place-items:center;padding:16px}
+.dlg.hide{display:none}
+.dbox{background:var(--card);color:var(--ink);border-radius:24px;padding:24px;width:min(460px,100%);max-height:92dvh;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.dbox h3{margin:0;font:700 20px Mali}
+.seg{display:flex;gap:6px;background:#eef2fa;padding:4px;border-radius:16px}.seg button{flex:1;border:0;background:none;padding:9px;border-radius:12px;font:600 14px Prompt;color:var(--sub);cursor:pointer}.seg button.on{background:#fff;color:var(--blue);box-shadow:0 1px 5px #0002}
+.toast{z-index:3000}
+.wa-bottom{display:none}
+.wa .av{box-shadow:0 1px 5px #0003}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .wa{background:linear-gradient(#0e1530,#142048)}
+:root:not([data-theme="light"]) .wa-top{background:#10172ee0}
+:root:not([data-theme="light"]) .msgs{background:linear-gradient(#141c3a,var(--card))}
+:root:not([data-theme="light"]) .bub{background:#26346a;color:#eaf0ff}
+:root:not([data-theme="light"]) .mi,:root:not([data-theme="light"]) .hsec{background:#222d57}
+:root:not([data-theme="light"]) .gi.on{background:#25356b}
+:root:not([data-theme="light"]) .net,:root:not([data-theme="light"]) .stk button,:root:not([data-theme="light"]) .pav button{background:var(--card)}
+:root:not([data-theme="light"]) .icb,:root:not([data-theme="light"]) .btn.sec{background:#25356b}
+:root:not([data-theme="light"]) .seg{background:#222d57}:root:not([data-theme="light"]) .seg button.on{background:var(--card)}}
+@media (max-width:1180px){.wa-body{grid-template-columns:300px minmax(0,1fr) 380px}}
+/* desktop tab layouts */
+@media (min-width:1000px){
+ .wa[data-tab=home] #pChat,.wa[data-tab=home] #pActivity,.wa[data-tab=home] #pProfile,
+ .wa[data-tab=chat] #pHome,.wa[data-tab=chat] #pActivity,.wa[data-tab=chat] #pProfile,
+ .wa[data-tab=activity] #pHome,.wa[data-tab=activity] #pChat,.wa[data-tab=activity] #pProfile,
+ .wa[data-tab=profile] #pHome,.wa[data-tab=profile] #pChat,.wa[data-tab=profile] #pActivity,
+ .wa[data-tab=gps] #pHome,.wa[data-tab=gps] #pChat,.wa[data-tab=gps] #pActivity,.wa[data-tab=gps] #pProfile{display:none}
+ .wa[data-tab=gps] .wa-body{grid-template-columns:300px minmax(0,1fr)}
+ .wa[data-tab=gps] #pRight{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:14px}
+ .wa[data-tab=gps] #pMap{flex:none}
+}
+/* mobile */
+@media (max-width:999px){
+ .wa-tabs,.wa-logo small,.net b{display:none}
+ .wa-top{padding:6px 14px;gap:10px}.wa-logo{font-size:16px}.wa-logo svg{width:42px;height:30px}
+ .wa-body{display:block;padding:10px;position:relative;overflow:hidden}
+ .wa-body>.pane,.wa-body>#pRight{height:100%}
+ .wa[data-tab] #pGroups,.wa[data-tab] #pHome,.wa[data-tab] #pChat,.wa[data-tab] #pActivity,.wa[data-tab] #pProfile,.wa[data-tab] #pRight{display:none}
+ .wa[data-tab=home] #pGroups{display:flex;height:42%}
+ .wa[data-tab=home] #pHome{display:flex;height:calc(58% - 10px);margin-top:10px}
+ .wa[data-tab=chat] #pChat{display:flex}
+ .wa[data-tab=gps] #pRight{display:flex}
+ .wa[data-tab=activity] #pActivity{display:flex}
+ .wa[data-tab=profile] #pProfile{display:flex}
+ #pMap{flex:0 0 58%}
+ .wa-bottom{display:flex;justify-content:space-around;background:var(--card);border-top:1px solid var(--line);padding:4px 6px calc(4px + env(safe-area-inset-bottom,0px));flex:none}
+ .wa-bottom button{padding:5px 10px;font-size:11.5px;flex:1}
+ .wa-bottom button.on{border-bottom-color:transparent;border-top:3px solid var(--blue)}
+ .dbox{padding:18px}
+ .m{max-width:94%}
+}
+@media (max-width:999px) and (max-height:620px){.wa[data-tab=home] #pGroups{height:50%}.wa[data-tab=home] #pHome{height:calc(50% - 10px)}}
+@media (prefers-reduced-motion:reduce){.mk:hover .pa{animation:none}}
 </style>
 </head>
 <body>
@@ -207,23 +349,59 @@ input[type=text]{cursor:text!important}
 <input type="file" id="file" accept="image/*" class="hide">
 </div></section>
 
-<!-- HOME -->
-<section id="v-home" class="app hide">
-<aside class="side">
-<div class="logo" style="font-size:20px"><svg viewBox="0 0 100 50"><use href="#cat" x="0" y="0" width="50" height="50"/><use href="#rab" x="48" y="0" width="50" height="50"/></svg><div>WE ARE FRIENDS</div></div>
-<div class="me-row" id="meRow"></div>
-<b style="font-size:14px">กลุ่มของฉัน</b>
-<div id="glist" style="display:flex;flex-direction:column;gap:8px"></div>
-<div class="row"><input type="text" id="gname" placeholder="ชื่อกลุ่มใหม่"><button class="mini" id="mk">สร้าง</button></div>
-<button class="btn-line" id="out" style="margin-top:auto">ออกจากระบบ</button>
+<!-- HOME / APP -->
+<section id="v-home" class="wa hide" data-tab="chat">
+<header class="wa-top">
+<div class="logo wa-logo"><svg viewBox="0 0 100 50"><use href="#cat" x="0" y="0" width="50" height="50"/><use href="#rab" x="48" y="0" width="50" height="50"/></svg><div>WE ARE FRIENDS<small>อยู่ไหน...ก็ไปด้วยกัน</small></div></div>
+<nav class="wa-tabs" id="tabsTop" aria-label="เมนูหลัก"></nav>
+<div class="wa-me"><span class="net" id="net" title="สถานะการเชื่อมต่อ"><i></i><b>กำลังเชื่อมต่อ</b></span><button class="wa-meb" id="meBtn" aria-label="โปรไฟล์ของฉัน"></button></div>
+</header>
+<div class="banner hide" id="banner" role="status"></div>
+<main class="wa-body">
+<aside class="pane" id="pGroups" aria-label="กลุ่มแชท">
+<div class="ph"><h3>กลุ่มแชท</h3><button class="icb" id="addG" aria-label="สร้างหรือเข้าร่วมกลุ่ม">＋</button></div>
+<div id="glist" class="glist"></div>
 </aside>
-<div class="main">
-<div class="top"><h3 id="gt"></h3><div class="row"><button class="btn-line" id="inv">🔗 คัดลอกลิงก์เชิญ</button><button class="btn-line" id="stop">⏸ หยุดแชร์ตำแหน่ง</button></div></div>
-<div class="mapbox big-map" id="bm"></div>
-<div class="mem" id="mem"></div>
-</div></section>
+<section class="pane" id="pHome">
+<div class="ph"><h3>หน้าแรก</h3></div>
+<div class="pbody" id="homeBody"></div>
+</section>
+<section class="pane" id="pChat">
+<div class="ph chh" id="chHead"></div>
+<div class="msgs" id="msgs" aria-live="polite"></div>
+<div class="stk hide" id="stk"></div>
+<form class="cin" id="cform"><button type="button" class="icb" id="stkBtn" aria-label="สติกเกอร์">☺</button><input id="ctext" type="text" autocomplete="off" maxlength="500" placeholder="พิมพ์ข้อความ..."><button class="send" aria-label="ส่ง" type="submit">➤</button></form>
+</section>
+<section class="pane" id="pActivity">
+<div class="ph"><h3>กิจกรรมของกลุ่ม</h3></div>
+<div class="pbody" id="actBody"></div>
+</section>
+<section class="pane" id="pProfile">
+<div class="ph"><h3>โปรไฟล์ของฉัน</h3></div>
+<div class="pbody" id="profBody"></div>
+</section>
+<div id="pRight">
+<section class="pane" id="pMap">
+<div class="ph"><div class="gpsic">📍</div><div><h3 id="mapT">GPS กลุ่ม</h3><small id="mapSub"></small></div>
+<div class="mapact"><button class="chip on" id="shareBtn">แชร์ตำแหน่ง</button></div></div>
+<div class="mapwrap"><div id="map" aria-label="แผนที่"></div>
+<div class="mapctl"><button id="zFit" title="ดูทุกคน" aria-label="ดูทุกคน">⛶</button><button id="zMe" title="ตำแหน่งของฉัน" aria-label="ตำแหน่งของฉัน">◎</button><button id="zMeet" title="ปักจุดนัดพบ" aria-label="ปักจุดนัดพบ">⚑</button></div>
+<div class="maphint hide" id="mapHint">แตะบนแผนที่เพื่อปักจุดนัดพบ</div></div>
+</section>
+<section class="pane" id="pMembers">
+<div class="ph"><h3>สมาชิกในกลุ่ม <small>(ตำแหน่งปัจจุบัน)</small></h3></div>
+<div class="mlist" id="mlist"></div>
+</section>
+</div>
+</main>
+<nav class="wa-bottom" id="tabsBot" aria-label="เมนูหลัก"></nav>
+</section>
+<div class="dlg hide" id="dlg" role="dialog" aria-modal="true"><div class="dbox" id="dbox"></div></div>
 <div class="toast hide" id="toast"></div>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js"></script>
 <script>
 const $=s=>document.querySelector(s);
 const views=['land','info','faq','login','setup','home'];
@@ -264,37 +442,404 @@ function drawSetup(){
 }
 $('#nm').oninput=()=>{if(S.avatar===S.prov)drawSetup()};
 $('#file').onchange=e=>{
- const f=e.target.files[0];if(!f)return;
- const r=new FileReader();r.onload=()=>{S.avatar=r.result;drawSetup()};r.readAsDataURL(f);
+ const f=e.target.files[0];if(!f)return;e.target.value='';
+ const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{
+  const c=document.createElement('canvas');c.width=c.height=96;const x=c.getContext('2d');const s=Math.min(im.width,im.height);
+  x.fillStyle='#fff';x.fillRect(0,0,96,96);x.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,96,96);
+  const d=c.toDataURL('image/jpeg',.82);
+  if(A.me&&!$('#v-home').classList.contains('hide')){A.me.avatar=d;saveMe(true)}else{S.avatar=d;drawSetup()}
+ };im.src=r.result};r.readAsDataURL(f);
 };
 $('#save').onclick=()=>{
  const n=$('#nm').value.trim();
  if(!n){$('#err').textContent='กรุณาตั้งชื่อก่อนเข้าใช้งาน';return}
  S.name=n;S.user=true;
- if(!S.groups.length)S.groups=[{name:'แก๊งเพื่อนซี้',m:[{n:'มินท์',a:'love',x:72,y:28},{n:'ต้น',a:'wink',x:80,y:62},{n:'พิม',a:'happy',x:26,y:66}]}];
- renderHome();show('home');
+ enterApp();
 };
-function renderHome(){
- $('#meRow').innerHTML=av(S.avatar,48,S.name)+`<div><b>${S.name.replace(/</g,'&lt;')}</b><small>${S.sharing?'กำลังแชร์ตำแหน่ง':'หยุดแชร์ตำแหน่งอยู่'}</small></div>`;
- $('#glist').innerHTML=S.groups.map((g,i)=>`<button class="g ${i===S.cur?'on':''}" data-i="${i}">👥 ${g.name.replace(/</g,'&lt;')} <small style="color:var(--sub)">(${g.m.length+1})</small></button>`).join('');
- $('#glist').querySelectorAll('.g').forEach(b=>b.onclick=()=>{S.cur=+b.dataset.i;renderHome()});
- const g=S.groups[S.cur];$('#gt').textContent=g.name;
- const pins=g.m.map(m=>`<div class="pin ${PETC[m.a]||(m.a==='rab'?'p':m.a==='chk'?'g':'b')}" style="left:${m.x}%;top:${m.y}%"><div style="display:grid;place-items:center">${PETS[m.a]?`<img src="${PETS[m.a]}" alt="${PETN[m.a]}">`:`<svg viewBox="0 0 100 ${m.a==='rab'?110:100}" width="26" height="26"><use href="#${m.a}"/></svg>`}</div></div>`).join('');
- const mePin=S.sharing?`<div class="me" style="left:50%;top:48%"></div><div class="bubble" style="left:44%;top:56%">คุณอยู่ที่นี่</div>`:'';
- $('#bm').innerHTML=`<svg class="bgm" viewBox="0 0 600 420" preserveAspectRatio="none"><rect width="600" height="420" fill="#e8efe0"/><path d="M-10 290C150 250 300 330 610 220L610 290C320 400 150 330 -10 370Z" fill="#a8d4f5"/><g stroke="#fff" stroke-width="9" fill="none"><path d="M0 90L600 150M140 0L200 420M420 0L380 420M0 220L600 180"/></g><g fill="#c9e5b8"><rect x="30" y="110" width="90" height="80" rx="14"/><rect x="450" y="250" width="110" height="110" rx="14"/><rect x="230" y="20" width="130" height="50" rx="14"/></g></svg>`+pins+mePin;
- $('#mem').innerHTML=`<div>${av(S.avatar,34,S.name)} ${S.name.replace(/</g,'&lt;')} (คุณ)</div>`+g.m.map(m=>`<div>${av(m.a,34)} ${m.n} <small style="color:var(--sub)">ห่าง ${(Math.abs(m.x-50)*0.03+0.2).toFixed(1)} กม.</small></div>`).join('');
+/* ================= WE ARE FRIENDS — real GPS app ================= */
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const rnd=(n)=>{const a=new Uint8Array(n);crypto.getRandomValues(a);return [...a].map(b=>(b%36).toString(36)).join('')};
+const BROKERS=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt'];
+const NS='wafriends1';
+const TABS=[['home','🏠','หน้าแรก'],['chat','💬','แชทกลุ่ม'],['gps','📍','GPS กลุ่ม'],['activity','⭐','กิจกรรม'],['profile','👤','โปรไฟล์']];
+const A={me:null,groups:{},cur:null,tab:'chat',client:null,net:'connecting',bi:0,fails:0,pos:null,watch:null,geoErr:null,meetMode:false,map:null,mk:{},meetMk:null,meCircle:null,stkOpen:false,thMap:{}};
+const enc=new TextEncoder(),dec=new TextDecoder();
+const b64=u8=>{let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s)};
+const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const hasCrypto=!!(window.crypto&&crypto.subtle);
+const hav=(a,b)=>{const R=6371000,r=x=>x*Math.PI/180,dLa=r(b.lat-a.lat),dLo=r(b.lng-a.lng),h=Math.sin(dLa/2)**2+Math.cos(r(a.lat))*Math.cos(r(b.lat))*Math.sin(dLo/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
+const fmtD=m=>m<1000?Math.round(m/10)*10+' ม.':(m/1000).toFixed(m<10000?1:0)+' กม.';
+const hhmm=t=>new Date(t).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',hour12:false});
+const ago=t=>{const s=Math.max(0,(Date.now()-t)/1000);if(s<90)return 'เมื่อสักครู่';if(s<3600)return Math.round(s/60)+' นาทีที่แล้ว';if(s<86400)return Math.round(s/3600)+' ชม.ที่แล้ว';return Math.round(s/86400)+' วันที่แล้ว'};
+const isOn=m=>m.loc&&Date.now()-m.loc.t<120000;
+const colorOf=s=>{let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return `hsl(${h%360} 60% 52%)`};
+function avh(a,size,name){
+ const st=`width:${size}px;height:${size}px`;
+ if(PETS[a])return `<span class="av pet" style="${st}"><img class="pet" src="${PETS[a]}" alt="${PETN[a]}"></span>`;
+ if(a&&a.startsWith('data:'))return `<span class="av" style="${st}"><img src="${a}" alt=""></span>`;
+ return `<span class="av" style="${st};background:${colorOf(name)};color:#fff;font:700 ${Math.round(size*.42)}px Fredoka">${esc((name||'?').trim().charAt(0).toUpperCase())}</span>`;
 }
-$('#mk').onclick=()=>{
- const n=$('#gname').value.trim();if(!n){toast('ตั้งชื่อกลุ่มก่อนนะ');return}
- S.groups.push({name:n,m:[]});S.cur=S.groups.length-1;$('#gname').value='';renderHome();toast('สร้างกลุ่มแล้ว กดคัดลอกลิงก์เพื่อเชิญเพื่อน');
-};
-$('#inv').onclick=async()=>{
- const code=Math.random().toString(36).slice(2,8);
- const link='https://wearefriends.app/join/'+code;
- try{await navigator.clipboard.writeText(link);toast('คัดลอกลิงก์แล้ว: '+link)}catch(e){toast('ลิงก์เชิญ: '+link)}
-};
-$('#stop').onclick=()=>{S.sharing=!S.sharing;$('#stop').textContent=S.sharing?'⏸ หยุดแชร์ตำแหน่ง':'▶ เริ่มแชร์ตำแหน่ง';renderHome()};
-$('#out').onclick=()=>{S.user=null;show('land')};
+const toast2=t=>toast(t);
+
+/* ---------- crypto: ทุกข้อความถูกเข้ารหัสด้วยรหัสกลุ่มก่อนส่ง ---------- */
+async function deriveGroup(id){
+ const base=await crypto.subtle.importKey('raw',enc.encode(id),'PBKDF2',false,['deriveKey']);
+ const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:enc.encode('we-are-friends-v1'),iterations:60000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+ const h=new Uint8Array(await crypto.subtle.digest('SHA-256',enc.encode('topic:'+id)));
+ return {key,th:[...h].slice(0,12).map(b=>b.toString(16).padStart(2,'0')).join('')};
+}
+async function seal(g,obj){const iv=crypto.getRandomValues(new Uint8Array(12));const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},g.key,enc.encode(JSON.stringify(obj))));const o=new Uint8Array(12+ct.length);o.set(iv);o.set(ct,12);return b64(o)}
+async function unseal(g,str){try{const u=unb64(str);const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:u.subarray(0,12)},g.key,u.subarray(12));return JSON.parse(dec.decode(pt))}catch(e){return null}}
+
+/* ---------- state ---------- */
+function newG(id,name,share){return {id,name,share:share!==false,key:null,th:null,members:{},msgs:LS.get('waf.m.'+id,[]),acts:LS.get('waf.a.'+id,[]),meet:null,unread:0,near:{}}}
+function saveGroups(){LS.set('waf.groups',Object.values(A.groups).map(g=>({id:g.id,name:g.name,share:g.share})))}
+async function addGroup(id,name,share){
+ if(A.groups[id])return A.groups[id];
+ const g=newG(id,name||'กลุ่มใหม่',share);A.groups[id]=g;
+ if(hasCrypto){const d=await deriveGroup(id);g.key=d.key;g.th=d.th;A.thMap[d.th]=id}
+ saveGroups();
+ if(A.client&&A.client.connected)subGroup(g);
+ return g;
+}
+const cg=()=>A.groups[A.cur];
+
+/* ---------- MQTT ---------- */
+function setNet(s){A.net=s;const n=$('#net');if(!n)return;n.className='net '+(s==='ok'?'ok':s==='bad'?'bad':'');n.querySelector('b').textContent=s==='ok'?'ออนไลน์':s==='bad'?'ออฟไลน์':'กำลังเชื่อมต่อ'}
+function connectNet(){
+ if(typeof mqtt==='undefined'){setNet('bad');banner('โหลดไลบรารีเครือข่ายไม่สำเร็จ กรุณาเช็กอินเทอร์เน็ตแล้วรีเฟรชหน้า','err');return}
+ if(A.client){try{A.client.end(true)}catch(e){}}
+ setNet('connecting');
+ const c=mqtt.connect(BROKERS[A.bi],{clientId:'waf_'+A.me.uid+'_'+rnd(5),clean:true,reconnectPeriod:0,connectTimeout:9000,keepalive:30,protocolVersion:4});
+ A.client=c;
+ c.on('connect',()=>{A.fails=0;setNet('ok');Object.values(A.groups).forEach(subGroup);publishAllLoc(true)});
+ const fail=()=>{if(A.client!==c)return;setNet('bad');A.fails++;if(A.fails>=2){A.bi=(A.bi+1)%BROKERS.length;A.fails=0}setTimeout(()=>{if(A.client===c&&A.me)connectNet()},3500)};
+ c.on('error',fail);c.on('close',fail);c.on('offline',fail);
+ c.on('message',(topic,payload)=>onMsg(topic,payload));
+}
+function subGroup(g){if(!g.th||!A.client)return;A.client.subscribe(`${NS}/${g.th}/#`,{qos:0});announce(g);publishAllLoc(true)}
+async function pub(g,kind,obj,opt={}){
+ if(!A.client||!A.client.connected||!g.key)return;
+ const topic=`${NS}/${g.th}/${kind}`+(opt.uid?'/'+opt.uid:'');
+ const payload=obj==null?'':await seal(g,obj);
+ A.client.publish(topic,payload,{qos:0,retain:!!opt.retain});
+}
+const profObj=()=>({name:A.me.name,av:A.me.avatar});
+function announce(g){pub(g,'p',profObj(),{retain:true,uid:A.me.uid})}
+async function onMsg(topic,payload){
+ const p=topic.split('/');if(p[0]!==NS)return;
+ const gid=A.thMap[p[1]],g=A.groups[gid];if(!g)return;
+ const kind=p[2],uid=p[3];
+ const text=dec.decode(payload);
+ if(kind==='l'||kind==='p'){
+  if(uid===A.me.uid)return;
+  if(!text){ if(kind==='l'&&g.members[uid]){delete g.members[uid].loc;refreshAll(g)} return}
+ }
+ if(!text)return;
+ const o=await unseal(g,text);if(!o)return;
+ if(kind==='p'){const m=g.members[uid]||(g.members[uid]={});m.name=String(o.name||'เพื่อน').slice(0,24);m.av=o.av;refreshAll(g)}
+ else if(kind==='l'){const m=g.members[uid]||(g.members[uid]={name:'เพื่อน'});if(typeof o.lat!=='number'||typeof o.lng!=='number')return;m.loc={lat:o.lat,lng:o.lng,acc:o.acc||0,t:o.t||Date.now()};checkNear(g,uid);refreshAll(g)}
+ else if(kind==='c'){if(o.uid===A.me.uid)return;if(g.msgs.some(x=>x.id===o.id))return;addMsg(g,o,true)}
+ else if(kind==='e'){if(o.uid===A.me.uid)return;addAct(g,o)}
+ else if(kind==='meta'){if(o.name&&g.name!==o.name){g.name=String(o.name).slice(0,30);saveGroups();renderAll(true)}}
+ else if(kind==='m'){g.meet=o.del?null:{lat:o.lat,lng:o.lng,by:o.by,t:o.t};if(g.id===A.cur)drawMarkers();}
+}
+function addMsg(g,o,incoming){
+ g.msgs.push(o);if(g.msgs.length>300)g.msgs=g.msgs.slice(-300);LS.set('waf.m.'+g.id,g.msgs);
+ if(incoming&&!(g.id===A.cur&&A.tab==='chat'))g.unread++;
+ if(g.id===A.cur)renderChat();renderGroups();
+}
+function addAct(g,o){
+ g.acts.unshift(o);if(g.acts.length>100)g.acts.length=100;LS.set('waf.a.'+g.id,g.acts);
+ if(g.id===A.cur&&A.tab==='activity')renderActivity();
+}
+function evt(g,k,extra){const o=Object.assign({k,uid:A.me.uid,name:A.me.name,t:Date.now()},extra||{});addAct(g,o);pub(g,'e',o)}
+function refreshAll(g){if(g.id!==A.cur){renderGroups();return}renderMembers();drawMarkers();renderGroups();renderMapHead()}
+function checkNear(g,uid){
+ const m=g.members[uid];if(!m||!m.loc||!A.pos)return;
+ const d=hav(A.pos,m.loc);
+ if(d<120&&!g.near[uid]){g.near[uid]=1;addAct(g,{k:'near',uid,name:m.name,t:Date.now(),d:Math.round(d)})}
+ else if(d>300)g.near[uid]=0;
+}
+
+/* ---------- GPS จริง ---------- */
+let lastPub=0,lastPubPos=null;
+function banner(t,cls){const b=$('#banner');if(!t){b.classList.add('hide');return}b.className='banner '+(cls||'');b.innerHTML=t}
+function startGeo(){
+ if(A.watch!=null)return;
+ if(!('geolocation' in navigator)){A.geoErr='unsupported';banner('เบราว์เซอร์นี้ไม่รองรับ GPS','err');return}
+ if(window.isSecureContext===false){A.geoErr='insecure';banner('เบราว์เซอร์ไม่อนุญาตให้ใช้ GPS บนหน้าเว็บที่ไม่ใช่ https กรุณาเปิดไฟล์นี้ผ่านลิงก์ https (เช่นอัปโหลดขึ้น GitHub Pages หรือ Netlify) หรือเปิดจาก localhost','err');return}
+ A.watch=navigator.geolocation.watchPosition(onPos,onGeoErr,{enableHighAccuracy:true,maximumAge:3000,timeout:25000});
+}
+function stopGeo(){if(A.watch!=null){navigator.geolocation.clearWatch(A.watch);A.watch=null}}
+function onPos(p){
+ A.geoErr=null;banner('');
+ const first=!A.pos;
+ A.pos={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy||0,t:Date.now()};
+ publishAllLoc(false);
+ Object.values(A.groups).forEach(g=>Object.keys(g.members).forEach(u=>checkNear(g,u)));
+ drawMarkers();renderMembers();renderMapHead();
+ if(first&&A.map)fitAll();
+}
+function onGeoErr(e){
+ A.geoErr=e.code;
+ if(e.code===1)banner('ยังไม่ได้อนุญาตให้ใช้ตำแหน่ง กรุณากดไอคอนแม่กุญแจข้างช่องที่อยู่เว็บ แล้วเลือก “อนุญาต” ตำแหน่ง จากนั้นรีเฟรชหน้า','err');
+ else if(e.code===2)banner('ยังหาตำแหน่งไม่ได้ ลองเปิด GPS ของเครื่องหรือย้ายไปที่โล่ง');
+ else banner('GPS ใช้เวลานานเกินไป กำลังลองใหม่...');
+ if(e.code===3){stopGeo();setTimeout(startGeo,1500)}
+ renderMapHead();
+}
+function publishAllLoc(force){
+ if(!A.pos||!A.me)return;
+ const now=Date.now(),moved=lastPubPos?hav(lastPubPos,A.pos):1e9;
+ if(!force&&now-lastPub<4000)return;
+ if(!force&&moved<8&&now-lastPub<30000)return;
+ lastPub=now;lastPubPos={lat:A.pos.lat,lng:A.pos.lng};
+ Object.values(A.groups).forEach(g=>{if(g.share)pub(g,'l',{lat:+A.pos.lat.toFixed(6),lng:+A.pos.lng.toFixed(6),acc:Math.round(A.pos.acc),t:now},{retain:true,uid:A.me.uid})});
+}
+setInterval(()=>{if(A.me&&A.pos)publishAllLoc(true);if(A.me){renderMembers();renderGroups()}},30000);
+function setShare(g,on){
+ g.share=on;saveGroups();
+ if(on){publishAllLoc(true);evt(g,'sh_on')}else{pub(g,'l',null,{retain:true,uid:A.me.uid});evt(g,'sh_off')}
+ renderMapHead();renderHome();
+}
+
+/* ---------- map (Leaflet + OpenStreetMap) ---------- */
+function initMap(){
+ if(A.map||typeof L==='undefined')return;
+ A.map=L.map('map',{zoomControl:false,attributionControl:true}).setView([13.7563,100.5018],12);
+ L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap © CARTO'}).addTo(A.map);
+ A.map.on('click',e=>{
+  if(!A.meetMode)return;
+  setMeetMode(false);
+  const g=cg();if(!g)return;
+  const o={lat:+e.latlng.lat.toFixed(6),lng:+e.latlng.lng.toFixed(6),by:A.me.name,t:Date.now()};
+  g.meet=o;pub(g,'m',o,{retain:true});evt(g,'meet',{lat:o.lat,lng:o.lng});drawMarkers();toast('ปักจุดนัดพบแล้ว เพื่อนในกลุ่มจะเห็นทันที');
+ });
+}
+function setMeetMode(on){A.meetMode=on;$('#zMeet').classList.toggle('on',on);$('#mapHint').classList.toggle('hide',!on)}
+function mkIcon(av,name,sub,me){
+ const inner=PETS[av]?`<img src="${PETS[av]}" alt="">`:(av&&av.startsWith('data:'))?`<img src="${av}" alt="" style="padding:0;object-fit:cover">`:esc((name||'?').charAt(0).toUpperCase());
+ const bg=(PETS[av]||(av&&av.startsWith('data:')))?'#fff':colorOf(name);
+ return L.divIcon({className:'mkw',iconSize:[0,0],iconAnchor:[0,0],html:`<div class="mk ${me?'self':''}"><div class="pa" style="background:${bg}">${inner}</div><div class="lb">${esc(name)}${sub?`<i>${esc(sub)}</i>`:''}</div></div>`});
+}
+function drawMarkers(){
+ if(!A.map)return;
+ const g=cg();const keep={};
+ const put=(id,lat,lng,icon,z)=>{
+  keep[id]=1;
+  if(A.mk[id]){A.mk[id].setLatLng([lat,lng]);A.mk[id].setIcon(icon)}
+  else{A.mk[id]=L.marker([lat,lng],{icon,zIndexOffset:z||0}).addTo(A.map);A.mk[id].on('click',()=>{A.map.flyTo([lat,lng],Math.max(A.map.getZoom(),16),{duration:.6})})}
+ };
+ if(A.pos){put('me',A.pos.lat,A.pos.lng,mkIcon(A.me.avatar,'ฉันอยู่ที่นี่','',true),1000);
+  if(A.meCircle)A.meCircle.setLatLng([A.pos.lat,A.pos.lng]).setRadius(Math.max(A.pos.acc,5));
+  else A.meCircle=L.circle([A.pos.lat,A.pos.lng],{radius:Math.max(A.pos.acc,5),color:'#2f7df6',weight:1,fillOpacity:.1,interactive:false}).addTo(A.map)}
+ if(g)Object.entries(g.members).forEach(([u,m])=>{if(!m.loc)return;const d=(A.pos?fmtD(hav(A.pos,m.loc)):'')+(isOn(m)?'':' · '+ago(m.loc.t));put(u,m.loc.lat,m.loc.lng,mkIcon(m.av,m.name,d))});
+ Object.keys(A.mk).forEach(id=>{if(!keep[id]){A.map.removeLayer(A.mk[id]);delete A.mk[id]}});
+ if(A.meetMk){A.map.removeLayer(A.meetMk);A.meetMk=null}
+ if(g&&g.meet){A.meetMk=L.marker([g.meet.lat,g.meet.lng],{icon:L.divIcon({className:'mkw',iconSize:[0,0],html:`<div class="mk"><div class="meetm">🚩</div><div class="lb" style="margin-top:-2px">จุดนัดพบ${A.pos?`<i>${fmtD(hav(A.pos,g.meet))} · ${esc(g.meet.by)}</i>`:''}</div></div>`})}).addTo(A.map);
+  A.meetMk.on('click',()=>{A.map.flyTo([g.meet.lat,g.meet.lng],Math.max(A.map.getZoom(),16),{duration:.6})})}
+}
+function fitAll(){
+ if(!A.map)return;const g=cg();const pts=[];
+ if(A.pos)pts.push([A.pos.lat,A.pos.lng]);
+ if(g){Object.values(g.members).forEach(m=>m.loc&&pts.push([m.loc.lat,m.loc.lng]));if(g.meet)pts.push([g.meet.lat,g.meet.lng])}
+ if(!pts.length)return;
+ if(pts.length===1)A.map.setView(pts[0],16);else A.map.fitBounds(pts,{padding:[70,70],maxZoom:17});
+}
+
+/* ---------- renderers ---------- */
+function renderTabs(){
+ const h=TABS.map(([k,i,l])=>`<button data-t="${k}" class="${A.tab===k?'on':''}" aria-current="${A.tab===k}"><span>${i}</span>${l}</button>`).join('');
+ $('#tabsTop').innerHTML=h;$('#tabsBot').innerHTML=h;
+ document.querySelectorAll('#tabsTop button,#tabsBot button').forEach(b=>b.onclick=()=>setTab(b.dataset.t));
+}
+function setTab(t){
+ A.tab=t;$('#v-home').dataset.tab=t;renderTabs();
+ const g=cg();if(t==='chat'&&g){g.unread=0;renderChat();renderGroups()}
+ if(t==='activity')renderActivity();if(t==='profile')renderProfile();if(t==='home')renderHome();
+ if(A.map)setTimeout(()=>{A.map.invalidateSize();if(t==='gps')fitAll()},60);
+ if(t==='chat'){const m=$('#msgs');m.scrollTop=m.scrollHeight}
+}
+function lastText(g){const m=g.msgs[g.msgs.length-1];if(!m)return 'ยังไม่มีข้อความ';return (m.uid===A.me.uid?'คุณ: ':(m.name||'')+': ')+(m.st?'ส่งสติกเกอร์':m.text)}
+function renderGroups(){
+ const gs=Object.values(A.groups);
+ $('#glist').innerHTML=gs.length?gs.map(g=>{const on=Object.values(g.members).filter(isOn).length;const lm=g.msgs[g.msgs.length-1];
+  return `<button class="gi ${g.id===A.cur?'on':''}" data-g="${g.id}"><span>${avh(Object.keys(PETS)[g.id.charCodeAt(0)%4],46,g.name)}</span><span class="tx"><b>${esc(g.name)}</b><small>${esc(lastText(g))}</small></span><span class="meta"><span>${lm?hhmm(lm.t):''}</span>${g.unread?`<span class="badge">${g.unread}</span>`:`<span>${on+(g.share&&A.pos?1:0)} ออนไลน์</span>`}</span></button>`}).join('')
+  :`<div class="empty">ยังไม่มีกลุ่ม<br>กด ＋ เพื่อสร้างกลุ่มใหม่ หรือเข้าร่วมกลุ่มของเพื่อนด้วยรหัส</div>`;
+ $('#glist').querySelectorAll('.gi').forEach(b=>b.onclick=()=>{selectG(b.dataset.g);if(window.innerWidth<1000&&A.tab==='home')setTab('chat')});
+}
+function selectG(id){A.cur=id;LS.set('waf.cur',id);const g=cg();if(g)g.unread=0;renderAll();if(A.map)setTimeout(()=>{A.map.invalidateSize();fitAll()},80)}
+function renderChat(){
+ const g=cg();
+ if(!g){$('#chHead').innerHTML='<h3>แชทกลุ่ม</h3>';$('#msgs').innerHTML='<div class="empty">เลือกหรือสร้างกลุ่มเพื่อเริ่มคุยกับเพื่อน</div>';$('#cform').classList.add('hide');return}
+ $('#cform').classList.remove('hide');
+ const mem=Object.values(g.members).length+1;
+ $('#chHead').innerHTML=`<span>${avh('happy',42,g.name)}</span><div style="min-width:0"><h3>${esc(g.name)}</h3><small>สมาชิก ${mem} คน</small></div><button class="icb" id="invB" aria-label="เชิญเพื่อน">🔗</button>`;
+ $('#invB').onclick=()=>openInvite(g);
+ const near=$('#msgs').scrollHeight-$('#msgs').scrollTop-$('#msgs').clientHeight<120;
+ $('#msgs').innerHTML=g.msgs.length?g.msgs.map(m=>{
+  const me=m.uid===A.me.uid;const mm=g.members[m.uid];
+  const av=me?A.me.avatar:(mm&&mm.av)||m.av;const nm=me?A.me.name:(mm&&mm.name)||m.name;
+  const body=m.st&&PETS[m.st]?`<img class="sticker" src="${PETS[m.st]}" alt="${PETN[m.st]}">`:`<div class="bub">${esc(m.text)}</div>`;
+  return `<div class="m ${me?'mine':''}">${me?'':avh(av,38,nm)}<div class="bx">${me?'':`<div class="nm">${esc(nm)}</div>`}<div class="row2">${body}<span class="tm">${hhmm(m.t)}</span></div></div></div>`}).join('')
+  :'<div class="sys">เริ่มคุยกันได้เลย ข้อความถูกเข้ารหัสระหว่างสมาชิกในกลุ่มเท่านั้น</div>';
+ if(near||!renderChat.done)$('#msgs').scrollTop=$('#msgs').scrollHeight;renderChat.done=1;
+ if(!$('#stk').children.length)$('#stk').innerHTML=Object.keys(PETS).map(k=>`<button data-s="${k}" aria-label="${PETN[k]}"><img src="${PETS[k]}" alt=""></button>`).join('');
+ $('#stk').querySelectorAll('button').forEach(b=>b.onclick=()=>{sendMsg(null,b.dataset.s);$('#stk').classList.add('hide')});
+}
+function sendMsg(text,st){
+ const g=cg();if(!g)return;
+ const o={id:rnd(10),uid:A.me.uid,name:A.me.name,t:Date.now()};
+ if(st)o.st=st;else{text=(text||'').trim();if(!text)return;o.text=text}
+ addMsg(g,o,false);pub(g,'c',o);
+ if(!A.client||!A.client.connected)toast('ยังไม่ได้เชื่อมต่อเครือข่าย ข้อความอาจไม่ถึงเพื่อน');
+}
+function mapMembers(g){return Object.entries(g.members).map(([u,m])=>({u,...m})).sort((a,b)=>(b.loc?1:0)-(a.loc?1:0)||(a.loc&&b.loc&&A.pos?hav(A.pos,a.loc)-hav(A.pos,b.loc):0))}
+function renderMapHead(){
+ const g=cg();
+ $('#mapT').textContent='GPS กลุ่ม';
+ if(!g){$('#mapSub').textContent='ยังไม่ได้เลือกกลุ่ม';$('#shareBtn').classList.add('hide');return}
+ $('#shareBtn').classList.remove('hide');
+ const on=Object.values(g.members).filter(isOn).length+(g.share&&A.pos?1:0);
+ $('#mapSub').textContent=A.geoErr&&!A.pos?'ยังไม่ได้ตำแหน่ง GPS':`${on} คนออนไลน์`;
+ $('#shareBtn').classList.toggle('on',g.share);$('#shareBtn').textContent=g.share?'กำลังแชร์ตำแหน่ง':'หยุดแชร์ตำแหน่ง';
+}
+function renderMembers(){
+ const g=cg();if(!g){$('#mlist').innerHTML='<div class="empty">เลือกกลุ่มเพื่อดูสมาชิก</div>';return}
+ const me=`<button class="mi" data-u="me">${avh(A.me.avatar,46,A.me.name)}<span class="tx"><b>${esc(A.me.name)} (ฉัน)</b><small>${A.pos?(g.share?`กำลังแชร์ · แม่นยำ ±${Math.round(A.pos.acc)} ม.`:'ปิดการแชร์ตำแหน่งอยู่'):A.geoErr?'ยังไม่ได้ตำแหน่ง GPS':'กำลังหาตำแหน่ง...'}</small></span><span class="stt ${A.pos&&g.share?'on':''}">${A.pos&&g.share?'อยู่ด้วยกัน':'ปิดอยู่'}</span></button>`;
+ const rows=mapMembers(g).map(m=>{
+  const o=isOn(m);
+  const sub=m.loc?`${A.pos?fmtD(hav(A.pos,m.loc))+' · ':''}${ago(m.loc.t)}`:'ไม่ได้แชร์ตำแหน่ง';
+  return `<button class="mi" data-u="${esc(m.u)}">${avh(m.av,46,m.name)}<span class="tx"><b>${esc(m.name||'เพื่อน')}</b><small>${esc(sub)}</small></span><span class="stt ${o?'on':''}">${o?'ออนไลน์':m.loc?'ออฟไลน์':'—'}</span></button>`}).join('');
+ let meet='';if(g.meet)meet=`<button class="mi" data-u="meet"><span class="av" style="width:46px;height:46px;background:#fff0f0;font-size:24px">🚩</span><span class="tx"><b>จุดนัดพบ</b><small>${A.pos?fmtD(hav(A.pos,g.meet))+' · ':''}ปักโดย ${esc(g.meet.by)}</small></span><span class="stt on" data-del="1">ลบ</span></button>`;
+ $('#mlist').innerHTML=me+rows+meet+(!rows?`<div class="empty">ยังไม่มีเพื่อนในกลุ่มนี้<br>กดปุ่มลิงก์เชิญที่หน้าแชท แล้วส่งให้เพื่อน</div>`:'');
+ $('#mlist').querySelectorAll('.mi').forEach(b=>b.onclick=ev=>{
+  const u=b.dataset.u;
+  if(u==='meet'){if(ev.target.dataset.del){g.meet=null;pub(g,'m',{del:1},{retain:true});drawMarkers();renderMembers();return}A.map&&A.map.flyTo([g.meet.lat,g.meet.lng],16);return}
+  const p=u==='me'?A.pos:(g.members[u]||{}).loc;
+  if(p&&A.map)A.map.flyTo([p.lat,p.lng],17,{duration:.7});else toast(u==='me'?'ยังไม่ได้ตำแหน่ง GPS ของคุณ':'เพื่อนคนนี้ยังไม่ได้แชร์ตำแหน่ง');
+ });
+}
+const ACTT={join:(a)=>`${a.name} เข้าร่วมกลุ่ม`,sh_on:a=>`${a.name} เริ่มแชร์ตำแหน่ง`,sh_off:a=>`${a.name} หยุดแชร์ตำแหน่ง`,meet:a=>`${a.name} ปักจุดนัดพบใหม่`,near:a=>`${a.name} อยู่ใกล้คุณแล้ว (ห่าง ${a.d} ม.)`};
+const ACTI={join:'👋',sh_on:'📍',sh_off:'⏸',meet:'🚩',near:'🎉'};
+function renderActivity(){
+ const g=cg();
+ if(!g){$('#actBody').innerHTML='<div class="empty">เลือกกลุ่มเพื่อดูกิจกรรม</div>';return}
+ $('#actBody').innerHTML=g.acts.length?g.acts.map(a=>{const mm=g.members[a.uid];return `<div class="act">${avh(a.uid===A.me.uid?A.me.avatar:mm&&mm.av,40,a.name)}<div><div>${ACTI[a.k]||'•'} ${esc((ACTT[a.k]||(()=>a.k))(a))}</div><div class="t">${ago(a.t)}</div></div></div>`}).join(''):'<div class="empty">ยังไม่มีกิจกรรม<br>เมื่อเพื่อนเข้ากลุ่ม แชร์ตำแหน่ง หรือเดินมาใกล้กัน จะแสดงที่นี่</div>';
+}
+function inviteLink(g){const base=location.protocol==='file:'?location.href.split('#')[0]:location.origin+location.pathname;return base+'#join='+g.id+'.'+encodeURIComponent(g.name)}
+function renderHome(){
+ const g=cg();
+ const sh=Object.values(A.groups).filter(x=>x.share).length;
+ $('#homeBody').innerHTML=`<div class="hsec" style="display:flex;gap:14px;align-items:center">${avh(A.me.avatar,64,A.me.name)}<div><h4>สวัสดี ${esc(A.me.name)}</h4><p>${A.pos?`GPS พร้อมใช้งาน แม่นยำ ±${Math.round(A.pos.acc)} เมตร`:A.geoErr?'ยังไม่ได้รับอนุญาตให้ใช้ GPS':'กำลังหาตำแหน่งของคุณ...'}<br>แชร์ตำแหน่งอยู่ ${sh} จาก ${Object.keys(A.groups).length} กลุ่ม</p></div></div>
+ ${g?`<div class="hsec"><h4>เชิญเพื่อนเข้า “${esc(g.name)}”</h4><p>ส่งรหัสหรือลิงก์นี้ให้เพื่อน เมื่อเพื่อนเข้าร่วมจะเห็นตำแหน่งกันแบบเรียลไทม์</p><div class="code"><input type="text" readonly value="${esc(g.id)}" aria-label="รหัสกลุ่ม"><button class="btn" id="cpC">คัดลอกรหัส</button></div><div class="code"><input type="text" readonly value="${esc(inviteLink(g))}" aria-label="ลิงก์เชิญ"><button class="btn sec" id="cpL">คัดลอกลิงก์</button></div></div>`:''}
+ <div class="hsec"><h4>เริ่มต้น</h4><p>สร้างกลุ่มใหม่หรือเข้าร่วมกลุ่มของเพื่อนด้วยรหัส</p><div class="code"><button class="btn" id="hC">สร้างกลุ่ม</button><button class="btn sec" id="hJ">เข้าร่วมด้วยรหัส</button></div></div>
+ <div class="hsec"><h4>ความเป็นส่วนตัว</h4><p>ตำแหน่งและข้อความถูกเข้ารหัสด้วยรหัสกลุ่มก่อนส่ง ผู้ให้บริการเครือข่ายอ่านไม่ได้ ใครมีรหัสกลุ่มจะเห็นตำแหน่งที่คุณแชร์ จึงควรส่งรหัสให้เฉพาะคนที่ไว้ใจ และปิดแชร์ได้ทุกเมื่อ</p></div>`;
+ const cp=(id,t)=>{const b=$(id);if(b)b.onclick=async()=>{try{await navigator.clipboard.writeText(t);toast('คัดลอกแล้ว')}catch(e){toast('กดค้างที่ช่องแล้วคัดลอกเอง')}}};
+ if(g){cp('#cpC',g.id);cp('#cpL',inviteLink(g))}
+ const hc=$('#hC');if(hc)hc.onclick=()=>openGroupDlg('new');const hj=$('#hJ');if(hj)hj.onclick=()=>openGroupDlg('join');
+}
+function renderProfile(){
+ const sel=A.me.avatar;
+ $('#profBody').innerHTML=`<div style="display:flex;justify-content:center">${avh(sel,112,A.me.name)}</div>
+ <div class="pav" style="justify-content:center">${Object.keys(PETS).map(k=>`<button data-a="${k}" class="${sel===k?'on':''}" aria-label="${PETN[k]}" title="${PETN[k]}">${avh(k,56,'')}</button>`).join('')}<button data-a="up" aria-label="อัปโหลดรูป" title="อัปโหลดรูปของฉัน" style="font-size:24px">📷</button></div>
+ <div class="fld"><label for="pn">ชื่อที่แสดงในกลุ่ม</label><input type="text" id="pn" maxlength="20" value="${esc(A.me.name)}"></div>
+ <button class="btn" id="psave">บันทึกโปรไฟล์</button>
+ <hr style="border:0;border-top:1px solid var(--line);width:100%">
+ <div class="fld"><label>GPS ของเครื่องนี้</label><div class="hsec" style="padding:12px 14px">${A.pos?`พบตำแหน่งแล้ว ความแม่นยำ ±${Math.round(A.pos.acc)} ม.`:A.geoErr?'ยังไม่ได้รับอนุญาตหรือหาตำแหน่งไม่ได้':'กำลังหาตำแหน่ง...'}</div></div>
+ <button class="btn red" id="pout">ออกจากระบบ</button>`;
+ $('#profBody').querySelectorAll('.pav button').forEach(b=>b.onclick=()=>{if(b.dataset.a==='up'){$('#file').click();return}A.me.avatar=b.dataset.a;saveMe(true)});
+ $('#psave').onclick=()=>{const n=$('#pn').value.trim();if(!n){toast('กรุณาตั้งชื่อก่อน');return}A.me.name=n;saveMe(true);toast('บันทึกแล้ว')};
+ $('#pout').onclick=logout;
+}
+function saveMe(rerender){LS.set('waf.me',A.me);Object.values(A.groups).forEach(announce);$('#meBtn').innerHTML=avh(A.me.avatar,40,A.me.name);if(rerender){renderProfile();renderAll(true)}}
+function renderAll(skipProfile){renderTabs();renderGroups();renderChat();renderMembers();renderMapHead();renderActivity();renderHome();if(!skipProfile)renderProfile();drawMarkers()}
+
+/* ---------- dialogs ---------- */
+function openDlg(h){$('#dbox').innerHTML=h;$('#dlg').classList.remove('hide')}
+function closeDlg(){$('#dlg').classList.add('hide')}
+$('#dlg').addEventListener('click',e=>{if(e.target.id==='dlg')closeDlg()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDlg()});
+function openGroupDlg(mode,prefill){
+ openDlg(`<h3>กลุ่มเพื่อน</h3><div class="seg"><button data-m="new" class="${mode==='new'?'on':''}">สร้างกลุ่มใหม่</button><button data-m="join" class="${mode==='join'?'on':''}">เข้าร่วมด้วยรหัส</button></div>
+ ${mode==='new'?`<div class="fld"><label for="gnm">ชื่อกลุ่ม</label><input type="text" id="gnm" maxlength="30" placeholder="เช่น เพื่อนซี้ตลอดไป"></div><button class="btn" id="gok">สร้างกลุ่ม</button>`
+ :`<div class="fld"><label for="gcd">รหัสกลุ่ม หรือลิงก์เชิญ</label><input type="text" id="gcd" placeholder="วางรหัสหรือลิงก์ที่เพื่อนส่งให้" value="${esc(prefill||'')}"></div><button class="btn" id="gok">เข้าร่วมกลุ่ม</button>`}
+ <button class="btn sec" id="gx">ปิด</button>`);
+ $('#dbox').querySelectorAll('.seg button').forEach(b=>b.onclick=()=>openGroupDlg(b.dataset.m));
+ $('#gx').onclick=closeDlg;
+ const f=$(mode==='new'?'#gnm':'#gcd');if(f)f.focus();
+ $('#gok').onclick=async()=>{
+  if(!hasCrypto){toast('เบราว์เซอร์นี้ไม่รองรับการเข้ารหัส (ต้องเปิดผ่าน https)');return}
+  if(mode==='new'){const n=$('#gnm').value.trim();if(!n){toast('ตั้งชื่อกลุ่มก่อนนะ');return}
+   const id=rnd(16);const g=await addGroup(id,n,true);closeDlg();A.cur=id;LS.set('waf.cur',id);evt(g,'join');
+   pub(g,'meta',{name:n},{retain:true});renderAll();openInvite(g);setTab('chat');
+  }else{const parsed=parseJoin($('#gcd').value);if(!parsed){toast('รหัสกลุ่มไม่ถูกต้อง');return}await doJoin(parsed.id,parsed.name);closeDlg()}
+ };
+}
+function parseJoin(s){
+ s=(s||'').trim();if(!s)return null;
+ const m=s.match(/join=([a-z0-9]{16})(?:\.([^&\s]*))?/i)||s.match(/^([a-z0-9]{16})$/i);
+ if(!m)return null;let nm='';try{nm=m[2]?decodeURIComponent(m[2]):''}catch(e){}
+ return {id:m[1].toLowerCase(),name:nm};
+}
+async function doJoin(id,name){
+ const had=!!A.groups[id];
+ const g=await addGroup(id,name||'กลุ่มเพื่อน',true);
+ A.cur=id;LS.set('waf.cur',id);
+ if(!had)evt(g,'join');
+ renderAll();setTab('chat');toast(had?'คุณอยู่ในกลุ่มนี้แล้ว':'เข้าร่วมกลุ่มแล้ว');
+ if(!name&&A.client&&A.client.connected){/* ชื่อกลุ่มมาจาก retained meta */}
+}
+function openInvite(g){
+ openDlg(`<h3>เชิญเพื่อนเข้า “${esc(g.name)}”</h3><p style="margin:0;color:var(--sub);line-height:1.7;font-size:14px">ส่งรหัสหรือลิงก์ให้เพื่อน แล้วให้เพื่อนกด “เข้าร่วมด้วยรหัส” หรือเปิดลิงก์ ถ้าเปิดไฟล์นี้จากในเครื่อง ลิงก์จะใช้ได้เมื่อเพื่อนมีไฟล์เดียวกัน ควรอัปโหลดไฟล์ขึ้นเว็บ https ก่อนแชร์ลิงก์</p>
+ <div class="code"><input type="text" readonly value="${esc(g.id)}" aria-label="รหัสกลุ่ม"><button class="btn" id="i1">คัดลอกรหัส</button></div>
+ <div class="code"><input type="text" readonly value="${esc(inviteLink(g))}" aria-label="ลิงก์เชิญ"><button class="btn sec" id="i2">คัดลอกลิงก์</button></div>
+ <button class="btn sec" id="gx">ปิด</button>`);
+ const cp=(id,t)=>$(id).onclick=async()=>{try{await navigator.clipboard.writeText(t);toast('คัดลอกแล้ว')}catch(e){toast('กดค้างที่ช่องแล้วคัดลอกเอง')}};
+ cp('#i1',g.id);cp('#i2',inviteLink(g));$('#gx').onclick=closeDlg;
+}
+
+/* ---------- boot ---------- */
+async function enterApp(){
+ if(!A.me){A.me=LS.get('waf.me',null)}
+ if(S&&S.user&&S.name){A.me={name:S.name,avatar:(S.avatar&&String(S.avatar).startsWith('data:'))||PETS[S.avatar]?S.avatar:'happy'}}
+ A.me.uid=LS.get('waf.uid',null)||rnd(12);LS.set('waf.uid',A.me.uid);
+ LS.set('waf.me',A.me);
+ show('home');
+ const stored=LS.get('waf.groups',[]);
+ for(const g of stored){await addGroup(g.id,g.name,g.share)}
+ A.cur=A.groups[LS.get('waf.cur',null)]?LS.get('waf.cur'):(Object.keys(A.groups)[0]||null);
+ $('#meBtn').innerHTML=avh(A.me.avatar,40,A.me.name);$('#meBtn').onclick=()=>setTab('profile');
+ renderAll();
+ initMap();
+ if(!hasCrypto)banner('เบราว์เซอร์นี้ไม่รองรับการเข้ารหัส ฟีเจอร์แชร์กับเพื่อนจะใช้ไม่ได้ กรุณาเปิดผ่าน https','err');
+ startGeo();connectNet();
+ if(A.map)setTimeout(()=>A.map.invalidateSize(),100);
+ if(A.pending){const p=A.pending;A.pending=null;await doJoin(p.id,p.name)}
+ else if(!Object.keys(A.groups).length){setTab('home');openGroupDlg('new')}
+}
+function logout(){
+ Object.values(A.groups).forEach(g=>{if(g.share)pub(g,'l',null,{retain:true,uid:A.me.uid})});
+ stopGeo();try{A.client&&A.client.end(true)}catch(e){}A.client=null;
+ LS.del('waf.me');S.user=null;A.me=null;A.groups={};A.thMap={};A.pos=null;A.cur=null;
+ if(A.map){Object.values(A.mk).forEach(m=>A.map.removeLayer(m));A.mk={}}
+ show('land');
+}
+$('#addG').onclick=()=>openGroupDlg('new');
+$('#cform').addEventListener('submit',e=>{e.preventDefault();const i=$('#ctext');sendMsg(i.value);i.value=''});
+$('#stkBtn').onclick=()=>$('#stk').classList.toggle('hide');
+$('#shareBtn').onclick=()=>{const g=cg();if(g)setShare(g,!g.share)};
+$('#zFit').onclick=fitAll;
+$('#zMe').onclick=()=>{if(A.pos&&A.map)A.map.flyTo([A.pos.lat,A.pos.lng],17,{duration:.6});else{toast('ยังไม่ได้ตำแหน่ง GPS ของคุณ');startGeo()}};
+$('#zMeet').onclick=()=>setMeetMode(!A.meetMode);
+window.addEventListener('hashchange',checkHash);
+function checkHash(){
+ const p=parseJoin(location.hash.slice(1));
+ if(!p)return;history.replaceState(null,'',location.pathname+location.search);
+ if(A.me&&$('#v-home')&&!$('#v-home').classList.contains('hide')){doJoin(p.id,p.name)}else A.pending=p;
+}
 
 const FQ=[
 ['ใช้งานไง? ต้องสมัครสมาชิกไหม?','สามารถใช้งาน WE ARE FRIENDS ได้โดยสร้างกลุ่มและแชร์ลิงก์ให้เพื่อนเข้าร่วมได้ หากต้องการใช้งานฟีเจอร์เพิ่มเติม เช่น การสร้างกลุ่มหรือจัดการข้อมูลส่วนตัว อาจต้องสมัครสมาชิกหรือเข้าสู่ระบบก่อน','เริ่มใช้งานได้เลย แต่ฟีเจอร์เพิ่มเติมอาจต้องเข้าสู่ระบบก่อน','#2f7df6'],
@@ -311,6 +856,12 @@ function openFaq(i){
  show('faq');
 }
 document.querySelectorAll('[data-go="faq"]').forEach(b=>b.addEventListener('click',()=>openFaq(0)));
+(function boot(){
+ const me=LS.get('waf.me',null);checkHash();
+ if(me&&me.name){A.me=me;S.user=true;S.name=me.name;S.avatar=me.avatar;enterApp()}
+ else if(A.pending){/* ให้ผู้ใช้ล็อกอินก่อน แล้วค่อยเข้ากลุ่ม */const t=$('#toast');}
+})();
+
 </script>
 </body>
 </html>
