@@ -399,7 +399,10 @@ input[type=text]{cursor:text!important}
 .mk.me .bb{position:absolute;left:0;bottom:40px;transform:translateX(-50%);background:#2f7df6;color:#fff;font:600 13.5px Prompt;padding:7px 16px;border-radius:18px;box-shadow:0 5px 14px #2f7df66e;white-space:nowrap}
 .mk.me .bb::after{content:"";position:absolute;left:50%;bottom:-5px;width:12px;height:12px;background:#2f7df6;transform:translateX(-50%) rotate(45deg);border-radius:2px}
 @keyframes meRing{0%{transform:scale(.9);opacity:.45}100%{transform:scale(2.4);opacity:0}}
-.lp{max-width:none}
+.lp{max-width:1536px;margin-left:auto;margin-right:auto}
+#v-land,#v-info,#v-faq{background:linear-gradient(#cfe8fb,#eaf6ff)}
+@media (min-width:1537px){.lp{box-shadow:0 0 60px #1b2a5e22}}
+.lp img{height:auto}
 #pPlan{display:none;background:transparent;box-shadow:none;border:0}
 .wa[data-tab=plan] #pPlan{display:flex}
 .wa[data-tab=plan] .wa-body>.pane:not(#pPlan),.wa[data-tab=plan] #pRight{display:none}
@@ -494,6 +497,9 @@ input[type=text]{cursor:text!important}
 .adlist{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow:auto}
 .adm textarea{width:100%;min-height:96px;border:2px solid var(--line);border-radius:12px;padding:10px;font:500 12px ui-monospace,monospace;background:var(--card);color:var(--ink)}
 .adm .warn{background:#fff4d6;border:1px solid #f1d98a;color:#5a4300;border-radius:14px;padding:12px 14px;line-height:1.7;font-size:13.5px}
+.icb2.lv{color:#d33}.icb2.lv:hover{background:#ffe3e3}
+.lvnote{margin:0;color:var(--sub);line-height:1.7;font-size:14px}
+.lvwarn{background:#fff4d6;border:1px solid #f1d98a;color:#5a4300;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.6}
 .adm .okb{background:#e4f8ec;border:1px solid #b5e5c8;color:#17703f;border-radius:14px;padding:12px 14px;font-size:13.5px}
 .wa-tabs{flex-wrap:nowrap}.wa-tabs button{white-space:nowrap}
 @media (min-width:1000px) and (max-width:1500px){.wa-tabs{gap:2px}.wa-tabs button{padding:8px 8px 6px;font-size:14px}.wa-logo{font-size:23px}.wa-logo .lgimg{height:46px}.planbtn{padding:8px 12px}}
@@ -1002,7 +1008,7 @@ async function onMsg(topic,payload){
  const text=dec.decode(payload);
  if(kind==='l'||kind==='p'){
   if(uid===A.me.uid)return;
-  if(!text){ if(kind==='l'&&g.members[uid]){delete g.members[uid].loc;refreshAll(g)} return}
+  if(!text){ if(kind==='l'&&g.members[uid]){delete g.members[uid].loc;refreshAll(g)} else if(kind==='p'&&g.members[uid]){removeMember(g,uid)} return}
  }
  if(!text)return;
  const o=await unseal(g,text);if(!o)return;
@@ -1010,9 +1016,16 @@ async function onMsg(topic,payload){
  if(kind==='p'){const m=g.members[uid]||(g.members[uid]={});m.name=String(o.name||'เพื่อน').slice(0,24);m.av=o.av;m.fr=FRD[o.fr]?o.fr:'';refreshAll(g)}
  else if(kind==='l'){const m=g.members[uid]||(g.members[uid]={name:'เพื่อน'});if(typeof o.lat!=='number'||typeof o.lng!=='number')return;m.loc={lat:o.lat,lng:o.lng,acc:o.acc||0,t:o.t||Date.now()};checkNear(g,uid);refreshAll(g)}
  else if(kind==='c'){if(o.uid===A.me.uid)return;if(g.msgs.some(x=>x.id===o.id))return;addMsg(g,o,true)}
- else if(kind==='e'){if(o.uid===A.me.uid)return;addAct(g,o)}
+ else if(kind==='e'){if(o.uid===A.me.uid)return;if(o.k==='leave'&&typeof o.uid==='string'){removeMember(g,o.uid,true);addAct(g,o)}else addAct(g,o)}
  else if(kind==='meta'){if(o.name&&g.name!==o.name){g.name=String(o.name).slice(0,30);saveGroups();renderAll(true)}}
  else if(kind==='m'){g.meet=o.del?null:{lat:o.lat,lng:o.lng,by:o.by,t:o.t};if(g.id===A.cur)drawMarkers();}
+}
+function removeMember(g,uid,silent){
+ if(!g.members[uid])return;
+ delete g.members[uid];if(g.near)delete g.near[uid];
+ if(A.follow===uid)A.follow=null;
+ if(A.mk[uid]&&A.map){A.map.removeLayer(A.mk[uid]);delete A.mk[uid]}
+ if(!silent||g.id===A.cur)refreshAll(g);else renderGroups();
 }
 function addMsg(g,o,incoming){
  g.msgs.push(o);if(g.msgs.length>300)g.msgs=g.msgs.slice(-300);LS.set('waf.m.'+g.id,g.msgs);
@@ -1175,8 +1188,8 @@ function renderChat(){
  if(!g){$('#chHead').innerHTML='<h3>แชทกลุ่ม</h3>';$('#msgs').innerHTML='<div class="empty"><img class="emj" src="'+MASCOT+'" alt="">เลือกหรือสร้างกลุ่มเพื่อเริ่มคุยกับเพื่อน</div>';$('#cform').classList.add('hide');return}
  $('#cform').classList.remove('hide');
  const mem=Object.values(g.members).length+1;
- $('#chHead').innerHTML=`<span>${avh('happy',42,g.name)}</span><div style="min-width:0"><h3>${esc(g.name)}</h3><small>สมาชิก ${mem} คน</small></div><span class="hic"><button class="icb2" id="srB" aria-label="ค้นหาข้อความ"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button><button class="icb2" id="invB" aria-label="เชิญเพื่อน"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.700 0l3-3a4 4 0 0 0-5.700-5.700l-1 1"/><path d="M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></svg></button><button class="icb2" id="mnB" aria-label="เมนูกลุ่ม">⋮</button></span>`;
- $('#invB').onclick=()=>openInvite(g);$('#mnB').onclick=()=>openGroupMenu(g);
+ $('#chHead').innerHTML=`<span>${avh('happy',42,g.name)}</span><div style="min-width:0"><h3>${esc(g.name)}</h3><small>สมาชิก ${mem} คน</small></div><span class="hic"><button class="icb2" id="srB" aria-label="ค้นหาข้อความ"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button><button class="icb2" id="invB" aria-label="เชิญเพื่อน"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.700 0l3-3a4 4 0 0 0-5.700-5.700l-1 1"/><path d="M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></svg></button><button class="icb2 lv" id="lvB" aria-label="ออกจากห้อง" title="ออกจากห้อง"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg></button><button class="icb2" id="mnB" aria-label="เมนูกลุ่ม">⋮</button></span>`;
+ $('#invB').onclick=()=>openInvite(g);$('#mnB').onclick=()=>openGroupMenu(g);$('#lvB').onclick=()=>confirmLeave(g);
  $('#srB').onclick=()=>{const q=prompt2();};
  const near=$('#msgs').scrollHeight-$('#msgs').scrollTop-$('#msgs').clientHeight<120;
  const msgs=A.msgQ?g.msgs.filter(m=>(m.text||'').toLowerCase().includes(A.msgQ)):g.msgs;
@@ -1197,15 +1210,34 @@ function prompt2(){
  $('#mqo').onclick=go;$('#mq').onkeydown=e=>{if(e.key==='Enter')go()};$('#mqc').onclick=()=>{A.msgQ='';closeDlg();renderChat()};
 }
 function openGroupMenu(g){
- openDlg(`<h3>${esc(g.name)}</h3><button class="btn sec" id="mm1">เชิญเพื่อน</button><button class="btn sec" id="mm2">ล้างประวัติแชทในเครื่องนี้</button><button class="btn red" id="mm3">ออกจากกลุ่ม</button><button class="btn sec" id="gx">ปิด</button>`);
+ openDlg(`<h3>${esc(g.name)}</h3><button class="btn sec" id="mm1">เชิญเพื่อน</button><button class="btn sec" id="mm2">ล้างประวัติแชทในเครื่องนี้</button><button class="btn red" id="mm3">🚪 ออกจากห้อง</button><button class="btn sec" id="gx">ปิด</button>`);
  $('#gx').onclick=closeDlg;$('#mm1').onclick=()=>openInvite(g);
  $('#mm2').onclick=()=>{g.msgs=[];LS.set('waf.m.'+g.id,[]);closeDlg();renderChat();renderGroups()};
- $('#mm3').onclick=()=>{
-  pub(g,'l',null,{retain:true,uid:A.me.uid});pub(g,'p',null,{retain:true,uid:A.me.uid});
-  if(A.client&&g.th)A.client.unsubscribe(`${NS}/${g.th}/#`);
-  delete A.thMap[g.th];delete A.groups[g.id];saveGroups();LS.del('waf.m.'+g.id);LS.del('waf.a.'+g.id);
-  A.cur=Object.keys(A.groups)[0]||null;LS.set(CK(),A.cur);closeDlg();renderAll();toast('ออกจากกลุ่มแล้ว');
- };
+ $('#mm3').onclick=()=>confirmLeave(g);
+}
+function confirmLeave(g){
+ const off=!(A.client&&A.client.connected);
+ openDlg(`<h3>ออกจากห้อง “${esc(g.name)}” ?</h3>
+ <p class="lvnote">คุณจะไม่เห็นตำแหน่งและข้อความของเพื่อนในห้องนี้อีก ตำแหน่งของคุณจะหายจากแผนที่ของเพื่อน และประวัติแชทในเครื่องนี้จะถูกลบ ถ้าอยากกลับมา ต้องใช้รหัสห้องเข้าร่วมใหม่<br>รหัสห้อง: <b>${esc(g.id)}</b></p>
+ ${off?'<div class="lvwarn">ตอนนี้ออฟไลน์อยู่ เพื่อนอาจยังเห็นชื่อคุณค้างในห้องจนกว่าคุณจะกลับมาออนไลน์</div>':''}
+ <button class="btn red" id="lvok">ยืนยัน ออกจากห้อง</button><button class="btn sec" id="lvx">ยกเลิก</button>`);
+ $('#lvx').onclick=closeDlg;
+ $('#lvok').onclick=()=>leaveGroup(g);
+}
+function leaveGroup(g){
+ if(!g||!A.groups[g.id]){closeDlg();return}
+ const name=g.name;
+ pub(g,'e',{k:'leave',uid:A.me.uid,name:A.me.name,t:Date.now()});
+ pub(g,'l',null,{retain:true,uid:A.me.uid});pub(g,'p',null,{retain:true,uid:A.me.uid});
+ if(A.client&&g.th){try{A.client.unsubscribe(`${NS}/${g.th}/#`)}catch(e){}}
+ if(g.th)delete A.thMap[g.th];
+ delete A.groups[g.id];saveGroups();LS.del('waf.m.'+g.id);LS.del('waf.a.'+g.id);
+ A.follow=null;A.msgQ='';A._mh=null;
+ A.cur=Object.keys(A.groups)[0]||null;LS.set(CK(),A.cur);
+ closeDlg();renderAll();
+ if(window.innerWidth<1000)setTab('home');
+ toast('ออกจากห้อง “'+name+'” แล้ว');
+ if(A.map)setTimeout(()=>{A.map.invalidateSize();fitAll()},80);
 }
 function sendMsg(text,st){
  const g=cg();if(!g)return;
@@ -1244,8 +1276,8 @@ function renderMembers(){
   if(p&&A.map)A.map.flyTo([p.lat,p.lng],17,{duration:1.1});else toast(u==='me'?'ยังไม่ได้ตำแหน่ง GPS ของคุณ':'เพื่อนคนนี้ยังไม่ได้แชร์ตำแหน่ง');
  });
 }
-const ACTT={join:(a)=>`${a.name} เข้าร่วมกลุ่ม`,sh_on:a=>`${a.name} เริ่มแชร์ตำแหน่ง`,sh_off:a=>`${a.name} หยุดแชร์ตำแหน่ง`,meet:a=>`${a.name} ปักจุดนัดพบใหม่`,near:a=>`${a.name} อยู่ใกล้คุณแล้ว (ห่าง ${a.d} ม.)`};
-const ACTI={join:'👋',sh_on:'📍',sh_off:'⏸',meet:'🚩',near:'🎉'};
+const ACTT={join:(a)=>`${a.name} เข้าร่วมกลุ่ม`,sh_on:a=>`${a.name} เริ่มแชร์ตำแหน่ง`,sh_off:a=>`${a.name} หยุดแชร์ตำแหน่ง`,meet:a=>`${a.name} ปักจุดนัดพบใหม่`,near:a=>`${a.name} อยู่ใกล้คุณแล้ว (ห่าง ${a.d} ม.)`,leave:a=>`${a.name} ออกจากกลุ่ม`};
+const ACTI={join:'👋',sh_on:'📍',sh_off:'⏸',meet:'🚩',near:'🎉',leave:'🚪'};
 function renderActivity(){
  const g=cg();
  if(!g){$('#actBody').innerHTML='<div class="empty">เลือกกลุ่มเพื่อดูกิจกรรม</div>';return}
@@ -1256,11 +1288,11 @@ function renderHome(){
  const g=cg();
  const sh=Object.values(A.groups).filter(x=>x.share).length;
  $('#homeBody').innerHTML=`<div class="hsec" style="display:flex;gap:14px;align-items:center">${avh(A.me.avatar,64,A.me.name,myFr())}<div><h4>สวัสดี ${esc(A.me.name)}</h4><p>${A.pos?`GPS พร้อมใช้งาน แม่นยำ ±${Math.round(A.pos.acc)} เมตร`:A.geoErr?'ยังไม่ได้รับอนุญาตให้ใช้ GPS':'กำลังหาตำแหน่งของคุณ...'}<br>แชร์ตำแหน่งอยู่ ${sh} จาก ${Object.keys(A.groups).length} กลุ่ม</p></div></div>
- ${g?`<div class="hsec"><h4>เชิญเพื่อนเข้า “${esc(g.name)}”</h4><p>ส่งรหัสหรือลิงก์นี้ให้เพื่อน เมื่อเพื่อนเข้าร่วมจะเห็นตำแหน่งกันแบบเรียลไทม์</p><div class="code"><input type="text" readonly value="${esc(g.id)}" aria-label="รหัสกลุ่ม"><button class="btn" id="cpC">คัดลอกรหัส</button></div><div class="code"><input type="text" readonly value="${esc(inviteLink(g))}" aria-label="ลิงก์เชิญ"><button class="btn sec" id="cpL">คัดลอกลิงก์</button></div></div>`:''}
+ ${g?`<div class="hsec"><h4>เชิญเพื่อนเข้า “${esc(g.name)}”</h4><p>ส่งรหัสหรือลิงก์นี้ให้เพื่อน เมื่อเพื่อนเข้าร่วมจะเห็นตำแหน่งกันแบบเรียลไทม์</p><div class="code"><input type="text" readonly value="${esc(g.id)}" aria-label="รหัสกลุ่ม"><button class="btn" id="cpC">คัดลอกรหัส</button></div><div class="code"><input type="text" readonly value="${esc(inviteLink(g))}" aria-label="ลิงก์เชิญ"><button class="btn sec" id="cpL">คัดลอกลิงก์</button></div><div class="code"><button class="btn red" id="hLv" style="width:100%">🚪 ออกจากห้องนี้</button></div></div>`:''}
  <div class="hsec"><h4>เริ่มต้น</h4><p>สร้างกลุ่มใหม่หรือเข้าร่วมกลุ่มของเพื่อนด้วยรหัส</p><div class="code"><button class="btn" id="hC">สร้างกลุ่ม</button><button class="btn sec" id="hJ">เข้าร่วมด้วยรหัส</button></div></div>
  <div class="hsec"><h4>ความเป็นส่วนตัว</h4><p>ตำแหน่งและข้อความถูกเข้ารหัสด้วยรหัสกลุ่มก่อนส่ง ผู้ให้บริการเครือข่ายอ่านไม่ได้ ใครมีรหัสกลุ่มจะเห็นตำแหน่งที่คุณแชร์ จึงควรส่งรหัสให้เฉพาะคนที่ไว้ใจ และปิดแชร์ได้ทุกเมื่อ</p></div>`;
  const cp=(id,t)=>{const b=$(id);if(b)b.onclick=async()=>{try{await navigator.clipboard.writeText(t);toast('คัดลอกแล้ว')}catch(e){toast('กดค้างที่ช่องแล้วคัดลอกเอง')}}};
- if(g){cp('#cpC',g.id);cp('#cpL',inviteLink(g))}
+ if(g){cp('#cpC',g.id);cp('#cpL',inviteLink(g));const hl=$('#hLv');if(hl)hl.onclick=()=>confirmLeave(g)}
  const hc=$('#hC');if(hc)hc.onclick=()=>openGroupDlg('new');const hj=$('#hJ');if(hj)hj.onclick=()=>openGroupDlg('join');
 }
 function renderProfile(){
@@ -1340,7 +1372,7 @@ function lockNotice(){
  openDlg(`<h3>หมดเวลาใช้งานฟรี 3 ชั่วโมงแล้ว</h3><p style="margin:0;color:var(--sub);line-height:1.7;font-size:14px">ตอนนี้ส่งข้อความและแชร์ตำแหน่งไม่ได้ อัปเกรดเป็นแพลนโปรหรือพรีเมียมเพื่อใช้งานต่อได้ไม่จำกัดเวลา</p><button class="btn" id="lk1">ดูแพลน</button><button class="btn sec" id="lk2">ปิด</button>`);
  $('#lk2').onclick=closeDlg;$('#lk1').onclick=()=>{closeDlg();setTab('plan')};
 }
-function groupLimit(){closeDlg();const n=PLANS[planKey()].groups;toast('แพลน'+PLANS[planKey()].n+'สร้าง/เข้าร่วมได้สูงสุด '+n+' กลุ่ม อัปเกรดเพื่อเพิ่มกลุ่ม');setTab('plan')}
+function groupLimit(){closeDlg();const n=PLANS[planKey()].groups;toast('แพลน'+PLANS[planKey()].n+'สร้าง/เข้าร่วมได้สูงสุด '+n+' กลุ่ม ออกจากห้องเดิมหรืออัปเกรดเพื่อเพิ่มกลุ่ม');setTab('plan')}
 function pickPlan(k){
  const P=PLANS[k];
  openDlg(`<h3>เลือกแพลน${P.n}</h3><p style="margin:0;color:var(--sub);line-height:1.7;font-size:14px">${k==='free'?'กลับไปใช้แพลนฟรี (3 ชั่วโมง / 1 กลุ่ม)':P.price+' บาท / เดือน'}<br>ตอนนี้เป็นโหมดทดลอง ยังไม่ได้เชื่อมระบบชำระเงินจริง การเลือกแพลนจะมีผลเฉพาะในเบราว์เซอร์เครื่องนี้</p><button class="btn" id="pk1">ยืนยันเลือกแพลนนี้</button><button class="btn sec" id="pk2">ยกเลิก</button>`);
