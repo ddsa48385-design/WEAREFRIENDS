@@ -497,6 +497,7 @@ input[type=text]{cursor:text!important}
 .adm .okb{background:#e4f8ec;border:1px solid #b5e5c8;color:#17703f;border-radius:14px;padding:12px 14px;font-size:13.5px}
 .wa-tabs{flex-wrap:nowrap}.wa-tabs button{white-space:nowrap}
 @media (min-width:1000px) and (max-width:1500px){.wa-tabs{gap:2px}.wa-tabs button{padding:8px 8px 6px;font-size:14px}.wa-logo{font-size:23px}.wa-logo .lgimg{height:46px}.planbtn{padding:8px 12px}}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:320px;margin:0 auto;padding:13px 22px;background:#fff;color:#3c4043;border:2px solid #e3e9f5;border-radius:999px;font:500 16px Prompt,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(47,125,246,.14);transition:transform .2s ease,box-shadow .2s ease}.gbtn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(47,125,246,.22)}.gbtn:active{transform:translateY(0)}.gbtn:focus-visible{outline:3px solid #2f7df6;outline-offset:2px}.gbtn svg{width:22px;height:22px;flex:none}
 </style>
 </head>
 <body>
@@ -563,7 +564,7 @@ input[type=text]{cursor:text!important}
 <h2>เข้าสู่ระบบ</h2><p>ล็อกอินด้วยบัญชี Google เพื่อใช้งาน เปิดเว็บใหม่ก็ยังเป็นบัญชีเดิม</p>
 <div class="gbox" id="gbtn"></div>
 <div class="gmsg" id="gmsg" role="alert"></div>
-<div class="gcfg hide" id="gcfg"><b>ตั้งค่า Google Client ID</b><br>ยังไม่ได้ใส่ Client ID ของเว็บนี้ สร้างที่ Google Cloud Console (OAuth client แบบ Web application) แล้วเพิ่มลิงก์เว็บของคุณใน Authorized JavaScript origins จากนั้นวางที่นี่ หรือใส่ในตัวแปร GOOGLE_CLIENT_ID ในไฟล์<input type="text" id="gcid" placeholder="xxxxxxxx.apps.googleusercontent.com" autocomplete="off" spellcheck="false"><button class="btn" id="gcidSave" type="button">บันทึก</button></div>
+<div class="gcfg hide" id="gcfg"><b>เชื่อม Firebase (ทำครั้งเดียว ฟรี)</b><br>1) เปิด <a href="https://console.firebase.google.com" target="_blank" rel="noopener">console.firebase.google.com</a> → Add project<br>2) Build → Authentication → Get started → Sign-in method → Google → Enable → Save<br>3) Authentication → Settings → Authorized domains → Add domain: <code id="gorigin" style="word-break:break-all"></code><br>4) Project settings → Your apps → Web (&lt;/&gt;) → คัดลอก firebaseConfig มาวางที่นี่ หรือใส่ในตัวแปร FIREBASE_CONFIG ในไฟล์<textarea id="fbtxt" rows="6" placeholder='{ apiKey: "...", authDomain: "xxx.firebaseapp.com", projectId: "...", appId: "..." }' spellcheck="false" style="width:100%;margin-top:8px"></textarea><button class="btn" id="fbSave" type="button">บันทึก</button></div><button class="btn-line hide" id="gchange" type="button" style="margin-top:10px">เปลี่ยนโปรเจกต์ Firebase</button><button class="btn-line hide" id="gchange" type="button" style="margin-top:10px">เปลี่ยน Client ID</button>
 <p style="margin-top:14px;font-size:12px">ใช้ Google เพื่อยืนยันตัวตนเท่านั้น ระบบไม่เห็นรหัสผ่าน Google ของคุณ</p>
 <button class="btn-line" data-go="land">← กลับหน้าแรก</button>
 </div></section>
@@ -636,7 +637,8 @@ input[type=text]{cursor:text!important}
 <div class="banscr hide" id="banScr"><div class="card"><img class="lgimg" data-mascot alt=""><h2>บัญชีนี้ถูกระงับการใช้งาน</h2><p>แอดมินระงับบัญชีนี้ชั่วคราว หากคิดว่าเกิดความผิดพลาด กรุณาติดต่อผู้ดูแลระบบ</p><button class="btn-line" id="banOut" type="button">ออกจากระบบ</button></div></div>
 
 
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js"></script>
 <script>
@@ -751,6 +753,7 @@ function avh0(a,size,name){
 const toast2=t=>toast(t);
 
 /* ================= Google Sign-In + แอดมิน ================= */
+const FIREBASE_CONFIG={apiKey:"AIzaSyDubj69c2y2wAAjfPjxyXOjPoz5WeerQiw",authDomain:"we-are-friends-38b56.firebaseapp.com",projectId:"we-are-friends-38b56",storageBucket:"we-are-friends-38b56.firebasestorage.app",messagingSenderId:"306965432375",appId:"1:306965432375:web:70cdbca29d37ffa8c857b2",measurementId:"G-FLQGH05GF9"};           // หรือวาง firebaseConfig เป็นออบเจ็กต์ที่นี่ เช่น {apiKey:'...',authDomain:'...',projectId:'...',appId:'...'}
 const GOOGLE_CLIENT_ID='';            // ใส่ Google OAuth Client ID ของคุณที่นี่ (หรือวางในหน้าล็อกอินก็ได้)
 const ADMIN_EMAIL='nuea.thanawee789@gmail.com';
 const ADMIN_PUB=null;                 // กุญแจสาธารณะแอดมิน (ดูวิธีตั้งค่าได้ในแท็บ “แอดมิน”) เช่น {"kty":"EC","crv":"P-256","x":"...","y":"..."}
@@ -768,26 +771,37 @@ async function roomHash(id){return hex((await sha('room:'+id)).slice(0,8))}
 /* ---- Google ---- */
 const gcid=()=>GOOGLE_CLIENT_ID||LS.get('waf.gcid','');
 function jwtPayload(t){const b=t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');const bin=atob(b+'='.repeat((4-b.length%4)%4));return JSON.parse(dec.decode(Uint8Array.from(bin,c=>c.charCodeAt(0))))}
+const fbcfg=()=>FIREBASE_CONFIG||LS.get('waf.fbcfg',null);
 function initGoogle(tries){
- const box=$('#gbtn'),cfg=$('#gcfg');if(!box)return;
- $('#gmsg').textContent='';
- if(!gcid()){cfg.classList.remove('hide');box.innerHTML='';return}
+ const box=$('#gbtn'),cfg=$('#gcfg'),m=$('#gmsg');if(!box)return;
+ m.textContent='';
+ const og=$('#gorigin');if(og)og.textContent=location.hostname||'(ต้องอัปโหลดขึ้นเว็บก่อน)';
+ const ch=$('#gchange');if(ch)ch.classList.toggle('hide',!fbcfg());
+ if(location.protocol==='file:'){m.textContent='Google ล็อกอินใช้ไม่ได้เมื่อเปิดไฟล์จากเครื่องโดยตรง กรุณาอัปโหลดขึ้นเว็บ https (เช่น GitHub Pages, Netlify, Firebase Hosting) หรือเปิดผ่าน http://localhost';cfg.classList.add('hide');box.innerHTML='';return}
+ if(!fbcfg()){cfg.classList.remove('hide');box.innerHTML='';return}
  cfg.classList.add('hide');
- if(!(window.google&&google.accounts&&google.accounts.id)){
-  if(tries<40)setTimeout(()=>initGoogle(tries+1),250);else $('#gmsg').textContent='โหลดระบบ Google ไม่สำเร็จ กรุณาเช็กอินเทอร์เน็ตแล้วรีเฟรชหน้า';
-  return;
- }
- try{
-  google.accounts.id.initialize({client_id:gcid(),callback:onCred,auto_select:false});
-  box.innerHTML='';
-  google.accounts.id.renderButton(box,{theme:'outline',size:'large',shape:'pill',text:'continue_with',logo_alignment:'left',width:300,locale:'th'});
- }catch(e){$('#gmsg').textContent='ตั้งค่า Google ไม่ถูกต้อง ตรวจสอบ Client ID'}
+ if(!(window.firebase&&firebase.auth)){if(tries<40)setTimeout(()=>initGoogle(tries+1),250);else m.textContent='โหลดระบบ Firebase ไม่สำเร็จ กรุณาเช็กอินเทอร์เน็ตแล้วรีเฟรชหน้า';return}
+ try{if(!firebase.apps.length)firebase.initializeApp(fbcfg())}catch(e){m.textContent='ค่า Firebase ไม่ถูกต้อง ตรวจสอบ firebaseConfig';return}
+ box.innerHTML='<button class="gbtn" id="gcustom" type="button"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C1 16.4 0 20.1 0 24s1 7.6 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg><span>เข้าสู่ระบบด้วย Google</span></button>';
+ $('#gcustom').onclick=async()=>{
+  m.textContent='';
+  try{
+   const r=await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());const x=r.user;
+   onCred({user:{email:x.email,email_verified:x.emailVerified,name:x.displayName,picture:x.photoURL,aud:gcid(),iss:'accounts.google.com',exp:Math.floor(Date.now()/1000)+300}});
+  }catch(e){
+   const c=e&&e.code||'';
+   m.textContent=c==='auth/unauthorized-domain'?'โดเมนนี้ยังไม่ได้เพิ่มใน Firebase → Authentication → Settings → Authorized domains':c==='auth/popup-closed-by-user'||c==='auth/cancelled-popup-request'?'':c==='auth/popup-blocked'?'เบราว์เซอร์บล็อกป๊อปอัป กรุณาอนุญาตแล้วกดใหม่':c==='auth/operation-not-allowed'?'ยังไม่ได้เปิด Google ใน Firebase → Authentication → Sign-in method':'ล็อกอิน Google ไม่สำเร็จ ลองใหม่อีกครั้ง';
+  }
+ };
 }
-$('#gcidSave').onclick=()=>{const v=$('#gcid').value.trim();if(!/^[\w.-]+\.apps\.googleusercontent\.com$/.test(v)){$('#gmsg').textContent='Client ID ไม่ถูกต้อง';return}LS.set('waf.gcid',v);initGoogle(0)};
+$('#gchange').onclick=()=>{$('#gcfg').classList.remove('hide');$('#fbtxt').value=''};
+$('#fbSave').onclick=()=>{const t=$('#fbtxt').value,c={};let k;const re=/([A-Za-z]+)["']?\s*:\s*["']([^"']+)["']/g;while((k=re.exec(t)))c[k[1]]=k[2];
+ if(!c.apiKey||!c.authDomain||!c.projectId){$('#gmsg').textContent='firebaseConfig ไม่ครบ ต้องมี apiKey, authDomain, projectId';return}
+ LS.set('waf.fbcfg',c);initGoogle(0)};
 function toDataUrl(url){return new Promise(res=>{if(!url)return res(null);const im=new Image();im.crossOrigin='anonymous';im.referrerPolicy='no-referrer';im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=96;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,96,96);const s=Math.min(im.width,im.height);x.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,96,96);res(c.toDataURL('image/jpeg',.82))}catch(e){res(null)}};im.onerror=()=>res(null);im.src=url})}
 async function onCred(resp){
  const m=$('#gmsg');m.textContent='';
- let u;try{u=jwtPayload(resp.credential)}catch(e){m.textContent='อ่านข้อมูลจาก Google ไม่ได้ ลองใหม่อีกครั้ง';return}
+ let u;try{u=resp.user||jwtPayload(resp.credential)}catch(e){m.textContent='อ่านข้อมูลจาก Google ไม่ได้ ลองใหม่อีกครั้ง';return}
  if(u.aud!==gcid()||!/^(https:\/\/)?accounts\.google\.com$/.test(u.iss||'')||(u.exp||0)*1000<Date.now()){m.textContent='ข้อมูลล็อกอินไม่ถูกต้องหรือหมดอายุ';return}
  if(!u.email||u.email_verified!==true){m.textContent='อีเมล Google นี้ยังไม่ได้ยืนยัน';return}
  if(!hasCrypto){m.textContent='ต้องเปิดผ่าน https หรือ localhost';return}
