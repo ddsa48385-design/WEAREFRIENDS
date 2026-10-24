@@ -378,11 +378,6 @@ input[type=text]{cursor:text!important}
 .mk .lb::after{content:"";position:absolute;left:50%;bottom:-5px;width:12px;height:12px;background:#fff;transform:translateX(-50%) rotate(45deg);border-radius:2px}
 .mk .lb i{color:#6b7aa0;font-size:11.5px}
 .meetm+.lb{padding-top:5px!important}
-.mk.me{padding:0;transform:translate(-50%,calc(-100% + 12px))}
-.mk.me::after{display:none}
-.mk.me .bb{position:relative;background:#2f7df6;color:#fff;font:600 13.5px Prompt;padding:7px 16px;border-radius:18px;margin-bottom:11px;box-shadow:0 5px 14px #2f7df66e;white-space:nowrap}
-.mk.me .bb::after{content:"";position:absolute;left:50%;bottom:-5px;width:12px;height:12px;background:#2f7df6;transform:translateX(-50%) rotate(45deg);border-radius:2px}
-.mk.me .dt{width:24px;height:24px;border-radius:50%;background:#2f7df6;border:4px solid #fff;animation:pulseDot 2s ease-out infinite}
 /* map controls like the mockup */
 .mapctl{right:12px;bottom:14px;gap:12px;align-items:center}
 .zoomg{display:flex;flex-direction:column;background:#fff;border-radius:24px;box-shadow:0 4px 14px #1b2a5e2e;overflow:hidden}
@@ -395,6 +390,60 @@ input[type=text]{cursor:text!important}
 .nearnote{position:absolute;right:78px;bottom:24px;z-index:450;pointer-events:none;font:700 21px/1.2 Mali;color:#1d57c7;text-align:center;transform:rotate(-12deg);background:#ffffffd9;padding:14px 18px;border-radius:50%;box-shadow:0 4px 16px #1b2a5e26}
 @media (max-height:700px),(max-width:520px){.nearnote{display:none}}
 @media (max-width:999px){.maptl button{width:40px;height:40px}.zoomg button{width:42px;height:42px}.mapctl>.loc{width:44px;height:44px}}
+
+/* ===== v3: me marker, plan page, full-width landing ===== */
+.mk.me{position:absolute;left:0;top:0;width:0;height:0;padding:0;transform:none;display:block}
+.mk.me::after{display:none}
+.mk.me .ring{position:absolute;left:-29px;top:-29px;width:58px;height:58px;border-radius:50%;background:#2f7df6;opacity:.4;animation:meRing 2s ease-out infinite}
+.mk.me .pa{position:absolute;left:-29px;top:-29px;margin:0;border-color:#2f7df6}
+.mk.me .bb{position:absolute;left:0;bottom:40px;transform:translateX(-50%);background:#2f7df6;color:#fff;font:600 13.5px Prompt;padding:7px 16px;border-radius:18px;box-shadow:0 5px 14px #2f7df66e;white-space:nowrap}
+.mk.me .bb::after{content:"";position:absolute;left:50%;bottom:-5px;width:12px;height:12px;background:#2f7df6;transform:translateX(-50%) rotate(45deg);border-radius:2px}
+@keyframes meRing{0%{transform:scale(.9);opacity:.45}100%{transform:scale(2.4);opacity:0}}
+.lp{max-width:none}
+#pPlan{display:none;background:transparent;box-shadow:none;border:0}
+.wa[data-tab=plan] #pPlan{display:flex}
+.wa[data-tab=plan] .wa-body>.pane:not(#pPlan),.wa[data-tab=plan] #pRight{display:none}
+@media (min-width:1000px){.wa[data-tab=plan] .wa-body{grid-template-columns:minmax(0,1fr)}}
+#planBody{padding:6px clamp(4px,1vw,16px) 18px;gap:0}
+.phead{text-align:center;margin:0 0 26px}
+.phead h2{margin:0;font:700 clamp(26px,3.6vw,50px)/1.15 Mali;color:#12306e}
+.phead p{margin:6px 0 0;color:#2a4a85;font-size:clamp(14px,1.3vw,18px)}
+.pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.2vw,36px);align-items:start;max-width:1400px;margin:0 auto;width:100%}
+.pc{position:relative;border-radius:30px;padding:30px 22px 22px;border:3px solid;display:flex;flex-direction:column;gap:14px;color:#12306e;transition:transform .35s cubic-bezier(.22,.8,.24,1),box-shadow .35s ease}
+.pc:hover{transform:translateY(-6px);box-shadow:0 16px 36px #2f7df626}
+.pc.free{background:#f2f9ff;border-color:#bfe0fb}.pc.pro{background:#fff8df;border-color:#ffd54a;box-shadow:0 10px 30px #f0a80030}.pc.premium{background:#f5f1ff;border-color:#c9b8ff}
+.ptag{position:absolute;top:-17px;left:18px;padding:6px 20px;border-radius:12px;color:#fff;font:700 17px Mali;transform:rotate(-3deg);box-shadow:0 4px 10px #0002}
+.ptop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pname{font:700 clamp(36px,4.2vw,58px)/1 Mali}
+.psub{margin-top:8px;font-weight:600;line-height:1.5}
+.pprice{font:700 clamp(28px,3.2vw,44px)/1.1 Mali;margin-top:6px}.pprice small,.pp small{font:500 15px Prompt;color:#4a5578}
+.ptop img{width:clamp(90px,10vw,140px);height:clamp(90px,10vw,140px);object-fit:contain;flex:none}
+.pimg{position:relative}.pchip{position:absolute;right:-4px;bottom:0;background:#ffc928;color:#12306e;border-radius:18px;padding:5px 14px;font:700 16px Mali;transform:rotate(-6deg)}
+.pchip.v{background:#8c6fe8;color:#fff;font-size:13px}
+.pbox{background:#ffffffd9;border-radius:22px;padding:12px 16px}
+.pp{font:700 clamp(26px,3vw,38px) Mali;padding:2px 0 8px}
+.pfeat{list-style:none;margin:0;padding:0}
+.pfeat li{display:flex;align-items:center;gap:12px;padding:11px 2px;border-top:1px solid #e3e9f5;font-size:15.5px}
+.pfeat li:first-child{border-top:0}.pfeat .fi{width:28px;text-align:center;font-size:20px}.pfeat span:nth-child(2){flex:1}
+.pfeat b{font-size:19px}.pfeat li.ok b{color:#2f7df6}.pfeat li.no{color:#8896b5}.pfeat li.no b{color:#a8b3cc}
+.pro .pfeat li.ok b{color:#f0a800}.premium .pfeat li.ok b{color:#7b55e0}
+.pbtn{border:0;border-radius:30px;padding:15px;font:700 18px Prompt;cursor:pointer;color:#fff;background:#5aa9ff;transition:transform .2s,box-shadow .25s,opacity .25s}
+.pbtn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 18px #0003}
+.pro .pbtn{background:#ffc928;color:#12306e}.premium .pbtn{background:#8c6fe8}.pbtn.cur{opacity:.65;cursor:default}
+.pmeter{margin:0 0 8px}.pbar{height:10px;border-radius:6px;background:#e3e9f5;overflow:hidden}.pbar i{display:block;height:100%;background:#2f7df6;border-radius:6px;transition:width .6s ease}
+.pmeter small{color:#4a5578;font-size:12.5px}
+.pfoot{display:flex;flex-wrap:wrap;gap:18px 34px;justify-content:space-around;align-items:center;background:#ffffffe0;border-radius:40px;padding:16px 30px;margin:30px auto 4px;max-width:1400px;width:100%;color:#12306e}
+.pfoot div{display:flex;flex-direction:column;gap:2px}.pfoot b{font-size:16px}.pfoot small{color:#4a5578}
+.pfoot .pq{font:700 18px/1.4 Mali;color:#1d57c7;text-align:center}
+@media (max-width:999px){.pgrid{grid-template-columns:1fr;gap:30px}.pfoot{border-radius:26px}}
+.planbtn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:22px;padding:8px 16px;background:#ffc928;color:#12306e;font:700 14px Prompt;cursor:pointer;box-shadow:0 3px 0 #e0a800;white-space:nowrap}
+.planbtn:hover{filter:brightness(1.04)}
+@media (max-width:999px){.planbtn span{display:none}.planbtn{padding:8px 10px}}
+/* me marker: รูปโปรไฟล์ของผู้ใช้เอง */
+.mk.me .pa{width:58px;height:58px;background:#fff!important}
+.mk.me .pa img{width:100%;height:100%;object-fit:cover;padding:0;border-radius:50%}
+.mk.me .pa img.petimg{object-fit:contain;padding:3px}
+#map{background:#e3ecf5}
 </style>
 </head>
 <body>
@@ -482,7 +531,7 @@ input[type=text]{cursor:text!important}
 <header class="wa-top">
 <div class="logo wa-logo"><svg viewBox="0 0 100 50"><use href="#cat" x="0" y="0" width="50" height="50"/><use href="#rab" x="48" y="0" width="50" height="50"/></svg><div>WE ARE FRIENDS<small>อยู่ไหน...ก็ไปด้วยกัน</small></div></div>
 <nav class="wa-tabs" id="tabsTop" aria-label="เมนูหลัก"></nav>
-<div class="wa-me"><span class="net" id="net" title="สถานะการเชื่อมต่อ"><i></i><b>กำลังเชื่อมต่อ</b></span><button class="bell" id="bell" aria-label="การแจ้งเตือน"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><i class="dot hide" id="bdot"></i></button><button class="wa-meb" id="meBtn" aria-label="โปรไฟล์ของฉัน"></button><span class="chev">⌄</span></div>
+<div class="wa-me"><span class="net" id="net" title="สถานะการเชื่อมต่อ"><i></i><b>กำลังเชื่อมต่อ</b></span><button class="planbtn" id="planBtn" aria-label="แพลน"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg><span>แพลน</span></button><button class="bell" id="bell" aria-label="การแจ้งเตือน"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><i class="dot hide" id="bdot"></i></button><button class="wa-meb" id="meBtn" aria-label="โปรไฟล์ของฉัน"></button><span class="chev">⌄</span></div>
 </header>
 <div class="banner hide" id="banner" role="status"></div>
 <main class="wa-body">
@@ -508,6 +557,7 @@ input[type=text]{cursor:text!important}
 <div class="ph"><h3>โปรไฟล์ของฉัน</h3></div>
 <div class="pbody" id="profBody"></div>
 </section>
+<section class="pane" id="pPlan" aria-label="แพลน"><div class="pbody" id="planBody"></div></section>
 <div id="pRight">
 <section class="pane" id="pMap">
 <div class="ph"><div class="gpsic"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.500a2.500 2.500 0 0 1 0 5Z"/></svg></div><div><h3 id="mapT">GPS กลุ่ม</h3><small class="onl" id="mapSub"></small></div>
@@ -547,7 +597,14 @@ function slideTo(m,lat,lng,ms){
  const step=t=>{const k=Math.min(1,(t-t0)/ms),e=1-Math.pow(1-k,3);m.setLatLng([la+(lat-la)*e,lo+(lng-lo)*e]);if(k<1)m._raf=requestAnimationFrame(step)};
  m._raf=requestAnimationFrame(step);
 }
-const TILES={map:['https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap © CARTO'}],sat:['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri'}]};
+const TILES={map:['https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}],map2:['https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri'}],sat:['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri'}]};
+function mkTile(key){
+ const T=TILES[key];const l=L.tileLayer(T[0],T[1]);
+ let bad=0;
+ l.on('tileload',()=>{bad=0});
+ l.on('tileerror',()=>{if(key==='map'&&++bad>=3&&A.tile===l&&!A.sat){bad=0;A.map.removeLayer(l);A.tile=mkTile('map2').addTo(A.map);A.tile.bringToBack()}});
+ return l;
+}
 const views=['land','info','faq','login','setup','home'];
 const show=v=>{views.forEach(x=>$('#v-'+x).classList.toggle('hide',x!==v));window.scrollTo(0,0);swap($('#v-'+v))};
 const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.remove('hide');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.add('hide'),2200)};
@@ -607,7 +664,8 @@ const rnd=(n)=>{const a=new Uint8Array(n);crypto.getRandomValues(a);return [...a
 const BROKERS=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt'];
 const NS='wafriends1';
 const TIC={"home": "<path d=\"M3 11.5 12 4l9 7.5\"/><path d=\"M5.5 10v10h13V10\"/>", "chat": "<path d=\"M4 5h16v11H9l-5 4Z\"/><path d=\"M8 9.500h8M8 12.500h5\"/>", "gps": "<path d=\"M12 21s7-6.500 7-12a7 7 0 0 0-14 0c0 5.500 7 12 7 12Z\"/><circle cx=\"12\" cy=\"9\" r=\"2.500\"/>", "activity": "<path d=\"m12 3 2.600 5.600 6.100.7-4.500 4.200 1.200 6L12 16.500 6.600 19.500l1.200-6L3.300 9.300l6.100-.7Z\"/>", "profile": "<circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21c0-4.500 3.600-7 8-7s8 2.500 8 7\"/>"};
-const TABS=[['home','','หน้าแรก'],['chat','','แชทกลุ่ม'],['gps','','GPS กลุ่ม'],['activity','','กิจกรรม'],['profile','','โปรไฟล์']];
+const TABS=[['home','','หน้าแรก'],['chat','','แชทกลุ่ม'],['gps','','GPS กลุ่ม'],['activity','','กิจกรรม'],['plan','','แพลน'],['profile','','โปรไฟล์']];
+TIC.plan='<path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/><path d="M5 21.5h14"/>';
 const EMO=['😀','😂','🥰','😍','😎','🤔','😭','👍','🙏','🎉','❤️','💙','🍜','☕','🚗','📍'];
 const A={me:null,groups:{},cur:null,tab:'chat',client:null,net:'connecting',bi:0,fails:0,pos:null,watch:null,geoErr:null,meetMode:false,map:null,mk:{},meetMk:null,meCircle:null,stkOpen:false,thMap:{}};
 const enc=new TextEncoder(),dec=new TextDecoder();
@@ -731,7 +789,9 @@ function onPos(p){
  Object.values(A.groups).forEach(g=>Object.keys(g.members).forEach(u=>checkNear(g,u)));
  drawMarkers();
  const nw=Date.now();if(first||nw-(A._rm||0)>2500){A._rm=nw;renderMembers();renderMapHead()}
- if(first&&A.map)fitAll();
+ if((first||A._coarse&&A.pos.acc<=1000)&&A.map)fitAll();
+ A._coarse=A.pos.acc>1000;
+ if(A._coarse)banner('ตำแหน่งยังไม่แม่นยำ (±'+Math.round(A.pos.acc)+' ม.) กำลังรอสัญญาณ GPS ที่ชัดขึ้น ถ้าอยู่ในอาคารลองเข้าใกล้หน้าต่าง');
 }
 function onGeoErr(e){
  A.geoErr=e.code;
@@ -746,7 +806,7 @@ function onGeoErr(e){
  renderMapHead();
 }
 function publishAllLoc(force){
- if(!A.pos||!A.me)return;
+ if(!A.pos||!A.me||planLocked())return;
  const now=Date.now(),moved=lastPubPos?hav(lastPubPos,A.pos):1e9;
  if(!force&&now-lastPub<4000)return;
  if(!force&&moved<8&&now-lastPub<30000)return;
@@ -764,7 +824,7 @@ function setShare(g,on){
 function initMap(){
  if(A.map||typeof L==='undefined')return;
  A.map=L.map('map',{zoomControl:false,attributionControl:true}).setView([13.7563,100.5018],12);
- A.tile=L.tileLayer(TILES.map[0],TILES.map[1]).addTo(A.map);A.map.attributionControl.setPosition('bottomleft');
+ A.tile=mkTile('map').addTo(A.map);A.map.attributionControl.setPosition('bottomleft');
   if(window.ResizeObserver)new ResizeObserver(()=>{if(A.map)A.map.invalidateSize({animate:false})}).observe($('#map'));
  A.map.on('click',e=>{
   if(!A.meetMode)return;
@@ -780,7 +840,11 @@ function mkIcon(av,name,sub,me){
  const bg=(PETS[av]||(av&&av.startsWith('data:')))?'#fff':colorOf(name);
  return L.divIcon({className:'mkw',iconSize:[0,0],iconAnchor:[0,0],html:`<div class="mk ${me?'self':''}"><div class="pa" style="background:${bg}">${inner}</div><div class="lb">${esc(name)}${sub?`<i>${esc(sub)}</i>`:''}</div></div>`});
 }
-function meIcon(){return L.divIcon({className:'mkw',iconSize:[0,0],iconAnchor:[0,0],html:'<div class="mk me"><div class="bb">ฉันอยู่ที่นี่</div><div class="dt"></div></div>'})}
+function meIcon(){
+ const av=A.me.avatar,nm=A.me.name,img=!!(PETS[av]||(av&&String(av).startsWith('data:')));
+ const inner=PETS[av]?`<img class="petimg" src="${PETS[av]}" alt="">`:img?`<img src="${av}" alt="">`:esc((nm||'?').charAt(0).toUpperCase());
+ return L.divIcon({className:'mkw',iconSize:[0,0],iconAnchor:[0,0],html:`<div class="mk me"><div class="bb">ฉันอยู่ที่นี่</div><div class="ring"></div><div class="pa" style="background:${img?'#fff':colorOf(nm)}">${inner}</div></div>`})
+}
 function drawMarkers(){
  if(!A.map)return;
  const g=cg();const keep={};
@@ -791,8 +855,8 @@ function drawMarkers(){
    else{const m=A.mk[id]=L.marker([lat,lng],{icon,zIndexOffset:z||0}).addTo(A.map);m._key=key;m.on('click',()=>{A.map.flyTo(m.getLatLng(),Math.max(A.map.getZoom(),16),{duration:1})})}
  };
  if(A.pos){put('me',A.pos.lat,A.pos.lng,meIcon(),1000);
-  if(A.meCircle)A.meCircle.setLatLng([A.pos.lat,A.pos.lng]).setRadius(Math.max(A.pos.acc,5));
-  else A.meCircle=L.circle([A.pos.lat,A.pos.lng],{radius:Math.max(A.pos.acc,5),color:'#2f7df6',weight:1,fillOpacity:.1,interactive:false}).addTo(A.map)}
+  if(A.meCircle)A.meCircle.setLatLng([A.pos.lat,A.pos.lng]).setRadius((A.pos.acc>500?1:Math.max(A.pos.acc,5)));
+  else A.meCircle=L.circle([A.pos.lat,A.pos.lng],{radius:(A.pos.acc>500?1:Math.max(A.pos.acc,5)),color:'#2f7df6',weight:1,fillOpacity:.1,interactive:false}).addTo(A.map)}
  if(g)Object.entries(g.members).forEach(([u,m])=>{if(!m.loc)return;const d=(A.pos?fmtD(hav(A.pos,m.loc)):'')+(isOn(m)?'':' · '+ago(m.loc.t));put(u,m.loc.lat,m.loc.lng,mkIcon(m.av,m.name,d))});
  Object.keys(A.mk).forEach(id=>{if(!keep[id]){A.map.removeLayer(A.mk[id]);delete A.mk[id]}});
  if(A.meetMk){A.map.removeLayer(A.meetMk);A.meetMk=null}
@@ -819,13 +883,13 @@ function renderTabs(){
 function setTab(t){
  const prevTab=A.tab;A.tab=t;$('#v-home').dataset.tab=t;renderTabs();
   if(prevTab!==t){
-   const pm={home:'#pHome',chat:'#pChat',activity:'#pActivity',profile:'#pProfile'};
+   const pm={home:'#pHome',chat:'#pChat',activity:'#pActivity',profile:'#pProfile',plan:'#pPlan'};
    if(pm[t])swap($(pm[t]));
    if(t==='gps'||prevTab==='gps')swap($('#pRight'));
    if(window.innerWidth<1000&&t==='home')swap($('#pGroups'));
   }
  const g=cg();if(t==='chat'&&g){g.unread=0;renderChat();renderGroups()}
- if(t==='activity')renderActivity();if(t==='profile')renderProfile();if(t==='home')renderHome();
+ if(t==='activity')renderActivity();if(t==='profile')renderProfile();if(t==='home')renderHome();if(t==='plan')renderPlan();
  if(A.map)setTimeout(()=>{A.map.invalidateSize();if(t==='gps')fitAll()},60);
  if(t==='chat'){const m=$('#msgs');m.scrollTop=m.scrollHeight}
 }
@@ -880,6 +944,7 @@ function openGroupMenu(g){
 }
 function sendMsg(text,st){
  const g=cg();if(!g)return;
+ if(planLocked()){lockNotice();return}
  const o={id:rnd(10),uid:A.me.uid,name:A.me.name,t:Date.now()};
  if(st)o.st=st;else{text=(text||'').trim();if(!text)return;o.text=text}
  addMsg(g,o,false);pub(g,'c',o);
@@ -964,10 +1029,11 @@ function openGroupDlg(mode,prefill){
  const f=$(mode==='new'?'#gnm':'#gcd');if(f)f.focus();
  $('#gok').onclick=async()=>{
   if(!hasCrypto){toast('เบราว์เซอร์นี้ไม่รองรับการเข้ารหัส (ต้องเปิดผ่าน https)');return}
+   if(mode==='new'&&Object.keys(A.groups).length>=PLANS[planKey()].groups){groupLimit();return}
   if(mode==='new'){const n=$('#gnm').value.trim();if(!n){toast('ตั้งชื่อกลุ่มก่อนนะ');return}
    const id=rnd(16);const g=await addGroup(id,n,true);closeDlg();A.cur=id;LS.set('waf.cur',id);evt(g,'join');
    pub(g,'meta',{name:n},{retain:true});renderAll();openInvite(g);setTab('chat');
-  }else{const parsed=parseJoin($('#gcd').value);if(!parsed){toast('รหัสกลุ่มไม่ถูกต้อง');return}await doJoin(parsed.id,parsed.name);closeDlg()}
+  }else{const parsed=parseJoin($('#gcd').value);if(!parsed){toast('รหัสกลุ่มไม่ถูกต้อง');return}if(!A.groups[parsed.id]&&Object.keys(A.groups).length>=PLANS[planKey()].groups){groupLimit();return}await doJoin(parsed.id,parsed.name);closeDlg()}
  };
 }
 function parseJoin(s){
@@ -978,6 +1044,7 @@ function parseJoin(s){
 }
 async function doJoin(id,name){
  const had=!!A.groups[id];
+ if(!had&&Object.keys(A.groups).length>=PLANS[planKey()].groups){groupLimit();return}
  const g=await addGroup(id,name||'กลุ่มเพื่อน',true);
  A.cur=id;LS.set('waf.cur',id);
  if(!had)evt(g,'join');
@@ -992,6 +1059,54 @@ function openInvite(g){
  const cp=(id,t)=>$(id).onclick=async()=>{try{await navigator.clipboard.writeText(t);toast('คัดลอกแล้ว')}catch(e){toast('กดค้างที่ช่องแล้วคัดลอกเอง')}};
  cp('#i1',g.id);cp('#i2',inviteLink(g));$('#gx').onclick=closeDlg;
 }
+
+/* ---------- แพลน ---------- */
+const PLANS={free:{n:'ฟรี',price:0,groups:1,secs:10800},pro:{n:'โปร',price:150,groups:2,secs:Infinity},premium:{n:'พรีเมียม',price:249,groups:Infinity,secs:Infinity}};
+const planKey=()=>PLANS[LS.get('waf.plan','free')]?LS.get('waf.plan','free'):'free';
+const planUsed=()=>+LS.get('waf.used',0)||0;
+const planLocked=()=>{const p=PLANS[planKey()];return p.secs!==Infinity&&planUsed()>=p.secs};
+const fmtDur=t=>{const h=Math.floor(t/3600),m=Math.floor(t%3600/60);return (h?h+' ชม. ':'')+m+' นาที'};
+function lockNotice(){
+ openDlg(`<h3>หมดเวลาใช้งานฟรี 3 ชั่วโมงแล้ว</h3><p style="margin:0;color:var(--sub);line-height:1.7;font-size:14px">ตอนนี้ส่งข้อความและแชร์ตำแหน่งไม่ได้ อัปเกรดเป็นแพลนโปรหรือพรีเมียมเพื่อใช้งานต่อได้ไม่จำกัดเวลา</p><button class="btn" id="lk1">ดูแพลน</button><button class="btn sec" id="lk2">ปิด</button>`);
+ $('#lk2').onclick=closeDlg;$('#lk1').onclick=()=>{closeDlg();setTab('plan')};
+}
+function groupLimit(){closeDlg();const n=PLANS[planKey()].groups;toast('แพลน'+PLANS[planKey()].n+'สร้าง/เข้าร่วมได้สูงสุด '+n+' กลุ่ม อัปเกรดเพื่อเพิ่มกลุ่ม');setTab('plan')}
+function pickPlan(k){
+ const P=PLANS[k];
+ openDlg(`<h3>เลือกแพลน${P.n}</h3><p style="margin:0;color:var(--sub);line-height:1.7;font-size:14px">${k==='free'?'กลับไปใช้แพลนฟรี (3 ชั่วโมง / 1 กลุ่ม)':P.price+' บาท / เดือน'}<br>ตอนนี้เป็นโหมดทดลอง ยังไม่ได้เชื่อมระบบชำระเงินจริง การเลือกแพลนจะมีผลเฉพาะในเบราว์เซอร์เครื่องนี้</p><button class="btn" id="pk1">ยืนยันเลือกแพลนนี้</button><button class="btn sec" id="pk2">ยกเลิก</button>`);
+ $('#pk2').onclick=closeDlg;
+ $('#pk1').onclick=()=>{LS.set('waf.plan',k);closeDlg();renderPlan();toast('เปลี่ยนเป็นแพลน'+P.n+'แล้ว')};
+}
+function renderPlan(){
+ const cur=planKey(),used=planUsed(),F=PLANS.free;
+ const li=(ico,t,ok)=>`<li class="${ok?'ok':'no'}"><span class="fi">${ico}</span><span>${t}</span><b>${ok?'✓':'✕'}</b></li>`;
+ const btn=(k,label)=>cur===k?`<button class="pbtn cur" disabled>แพลนปัจจุบัน ✓</button>`:`<button class="pbtn" data-p="${k}">${label}</button>`;
+ const meter=cur==='free'?`<div class="pmeter"><div class="pbar"><i style="width:${Math.min(100,used/F.secs*100)}%"></i></div><small>ใช้ไปแล้ว ${fmtDur(used)} จาก 3 ชั่วโมง${used>=F.secs?' · หมดเวลาแล้ว':''}</small></div>`:'';
+ $('#planBody').innerHTML=`<div class="phead"><h2>เลือกแพลนที่ใช่ สำหรับคุณ</h2><p>เชื่อมต่อเพื่อน ๆ ของคุณได้มากขึ้น ในแบบที่คุณต้องการ 💙</p></div>
+ <div class="pgrid">
+  <article class="pc free"><span class="ptag" style="background:#5aa9ff">แพลนฟรี</span>
+   <div class="ptop"><div><div class="pname">ฟรี</div><div class="psub">ใช้งานได้ 3 ชั่วโมง<br>จำกัด 1 กลุ่ม</div></div><img src="${PETS.happy}" alt=""></div>
+   <div class="pbox"><div class="pp">0 บาท <small>/ ใช้งาน 3 ชั่วโมง</small></div>${meter}<ul class="pfeat">${li('⏱','ใช้งานได้ 3 ชั่วโมง',1)}${li('👥','จำกัด 1 กลุ่ม',1)}${li('👤','สมาชิกไม่จำกัด',0)}${li('🎨','ตกแต่งโปรไฟล์ (พื้นฐาน)',0)}${li('⭐','ฟีเจอร์พิเศษอื่น ๆ',0)}</ul></div>
+   ${btn('free','เริ่มใช้งานฟรี')}</article>
+  <article class="pc pro"><span class="ptag" style="background:#f0a800">👑 แนะนำ</span>
+   <div class="ptop"><div><div class="pname">โปร</div><div class="pprice">150 บาท<small> / เดือน</small></div></div><div class="pimg"><img src="${PETS.wink}" alt=""><span class="pchip">2 กลุ่ม</span></div></div>
+   <div class="pbox"><ul class="pfeat">${li('⏱','ใช้งานได้ไม่จำกัดเวลา',1)}${li('👥','กลุ่มได้ 2 กลุ่ม',1)}${li('👤','สมาชิกไม่จำกัด',1)}${li('✏️','ตกแต่งโปรไฟล์ได้มากขึ้น',1)}${li('⭐','ฟีเจอร์พิเศษอื่น ๆ',1)}</ul></div>
+   ${btn('pro','เลือกแพลนนี้')}</article>
+  <article class="pc premium"><span class="ptag" style="background:#8c6fe8">👑 พรีเมียม</span>
+   <div class="ptop"><div><div class="pname">พรีเมียม</div><div class="pprice">249 บาท<small> / เดือน</small></div></div><div class="pimg"><img src="${PETS.love}" alt=""><span class="pchip v">ครบทุกฟีเจอร์!</span></div></div>
+   <div class="pbox"><ul class="pfeat">${li('⏱','ใช้งานได้ไม่จำกัดเวลา',1)}${li('👥','กลุ่มได้ไม่จำกัด',1)}${li('👤','สมาชิกไม่จำกัด',1)}${li('✏️','ตกแต่งโปรไฟล์ได้มากที่สุด',1)}${li('⭐','ฟีเจอร์พิเศษทั้งหมด',1)}</ul></div>
+   ${btn('premium','เลือกแพลนนี้')}</article>
+ </div>
+ <div class="pfoot"><div><b>🛡 ปลอดภัย มั่นใจได้</b><small>ข้อมูลของคุณถูกปกป้อง</small></div><div><b>💙 พร้อมดูแล 24 ชม.</b><small>ทีมงานคอยช่วยเหลือเสมอ</small></div><div><b>⭐ อัปเดตฟีเจอร์ใหม่เสมอ</b><small>เพื่อประสบการณ์ที่ดียิ่งขึ้น</small></div><div class="pq">เพราะมิตรภาพ<br>มีค่ามากกว่าแค่เวลา ♡</div></div>`;
+ $('#planBody').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>pickPlan(b.dataset.p));
+}
+setInterval(()=>{
+ if(!A.me||document.hidden||planKey()!=='free')return;
+ const u=planUsed();if(u>=PLANS.free.secs)return;
+ LS.set('waf.used',u+15);
+ if(u+15>=PLANS.free.secs)lockNotice();
+ if(A.tab==='plan')renderPlan();
+},15000);
 
 /* ---------- boot ---------- */
 async function enterApp(){
@@ -1028,10 +1143,11 @@ $('#zIn').onclick=()=>A.map&&A.map.zoomIn&&A.map.zoomIn();$('#zOut').onclick=()=
 $('#segG').onclick=()=>{A.follow=null;renderMapHead();fitAll()};
 $('#segP').onclick=()=>{const g=cg();if(!g)return;const f=mapMembers(g).find(m=>m.loc);if(!f){toast('ยังไม่มีเพื่อนที่แชร์ตำแหน่ง');return}A.follow=f.u;renderMapHead();A.map&&A.map.flyTo([f.loc.lat,f.loc.lng],17,{duration:.6})};
 $('#gsr').oninput=renderGroups;
+$('#planBtn').onclick=()=>setTab('plan');
 $('#bell').onclick=()=>{setTab('activity');$('#bdot').classList.add('hide')};
 $('#zMe').onclick=()=>{if(A.pos&&A.map){A.follow=null;renderMapHead();A.map.flyTo([A.pos.lat,A.pos.lng],17,{duration:1})}else{toast('กำลังขอตำแหน่ง GPS ของคุณ...');startGeo(true)}};
 $('#zMeet').onclick=()=>setMeetMode(!A.meetMode);
-$('#zLayer').onclick=()=>{if(!A.map||!A.tile)return;A.sat=!A.sat;const T=A.sat?TILES.sat:TILES.map;A.map.removeLayer(A.tile);A.tile=L.tileLayer(T[0],T[1]).addTo(A.map);A.tile.bringToBack();$('#zLayer').classList.toggle('on',A.sat)};
+$('#zLayer').onclick=()=>{if(!A.map||!A.tile)return;A.sat=!A.sat;A.map.removeLayer(A.tile);A.tile=mkTile(A.sat?'sat':'map').addTo(A.map);A.tile.bringToBack();$('#zLayer').classList.toggle('on',A.sat)};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&A.me&&!A.pos)startGeo(true)});
 window.addEventListener('hashchange',checkHash);
 function checkHash(){
